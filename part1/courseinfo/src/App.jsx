@@ -1,4 +1,5 @@
 const App = () => {
+  // Static course definition used to feed child components
   const course = {
     name: "Half Stack application development",
     parts: [
@@ -17,6 +18,7 @@ const App = () => {
     ],
   };
 
+  // Render the header, content list, and total summary
   return (
     <div>
       <Header name={course.name} />
@@ -43,23 +45,23 @@ const Header = ({ name }) => {
 // Passing an array as method
 // From React docs https://react.dev/learn/rendering-lists
 const Content = ({ parts }) => {
-  // Map the `parts` items into a new array of JSX node
+  // Transform each part into a paragraph element
   const partList = parts.map((item) => (
-    // Add key as React needs key
+    // Add key as React need key
     <p key={item.name}>
       {item.name} {item.exercises}
     </p>
   ));
 
-  // Return `partList` wrapped in <div>
+  // Inject the generated list into the DOM
   return <div>{partList}</div>;
 };
 
 // Total component
 const Total = ({ parts }) => {
-  // Calculate the total exercise using reduce()
+  // Calculate the total number of exercises across all parts
   const totalExercises = parts.reduce((acc, cur) => acc + cur.exercises, 0);
 
-  // Return <p> with totalExercises
+  // Present the aggregate exercise count to the user
   return <p>Number of exercises {totalExercises}</p>;
 };
