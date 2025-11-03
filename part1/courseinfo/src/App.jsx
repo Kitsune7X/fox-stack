@@ -17,7 +17,11 @@ const App = () => {
         <Part part={part3} exercise={exercises3} />
       </Content>
 
-      <p>Number of exercises {exercises1 + exercises2 + exercises3}</p>
+      <Total
+        exercises1={exercises1}
+        exercises2={exercises2}
+        exercises3={exercises3}
+      />
     </div>
   );
 };
@@ -44,4 +48,9 @@ const Part = ({ part, exercise }) => {
       {part} {exercise}
     </p>
   );
+};
+
+// Total component
+const Total = ({ exercises1, exercises2, exercises3 }) => {
+  return <p>Number of exercises {exercises1 + exercises2 + exercises3}</p>;
 };
