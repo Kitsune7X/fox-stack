@@ -1,27 +1,29 @@
 const App = () => {
-  const course = "Half Stack application development";
-  const part1 = "Fundamentals of React";
-  const exercises1 = 10;
-  const part2 = "Using props to pass data";
-  const exercises2 = 7;
-  const part3 = "State of a component";
-  const exercises3 = 14;
+  const course = {
+    name: "Half Stack application development",
+    parts: [
+      {
+        name: "Fundamentals of React",
+        exercises: 10,
+      },
+      {
+        name: "Using props to pass data",
+        exercises: 7,
+      },
+      {
+        name: "State of a component",
+        exercises: 14,
+      },
+    ],
+  };
 
   return (
     <div>
-      <Header course={course} />
+      <Header name={course.name} />
 
-      <Content>
-        <Part part={part1} exercise={exercises1} />
-        <Part part={part2} exercise={exercises2} />
-        <Part part={part3} exercise={exercises3} />
-      </Content>
+      <Content parts={course.parts} />
 
-      <Total
-        exercises1={exercises1}
-        exercises2={exercises2}
-        exercises3={exercises3}
-      />
+      <Total parts={course.parts} />
     </div>
   );
 };
@@ -29,28 +31,35 @@ const App = () => {
 export default App;
 
 // Header component
-// Deconstruct prop object into `course` primitive
-const Header = ({ course }) => {
-  return <h1>{course}</h1>;
+// Deconstruct prop object into `name` primitive
+const Header = ({ name }) => {
+  return <h1>{name}</h1>;
 };
 
 // Content component
-// From react docs https://react.dev/learn/passing-props-to-a-component
+// From React docs https://react.dev/learn/passing-props-to-a-component
 // When you nest content inside a JSX tag, the parent component will receive that content in a prop called `children`.
-const Content = ({ children }) => {
-  return <div>{children}</div>;
-};
 
-// Part component
-const Part = ({ part, exercise }) => {
-  return (
-    <p>
-      {part} {exercise}
+// Passing an array as method
+// From React docs https://react.dev/learn/rendering-lists
+const Content = ({ parts }) => {
+  // Map the `parts` items into a new array of JSX node
+  const partList = parts.map((item) => (
+    // Add key as React needs key
+    <p key={item.name}>
+      {item.name} {item.exercises}
     </p>
-  );
+  ));
+
+  // Return `partList` wrapped in <div>
+  return <div>{partList}</div>;
 };
 
 // Total component
-const Total = ({ exercises1, exercises2, exercises3 }) => {
-  return <p>Number of exercises {exercises1 + exercises2 + exercises3}</p>;
+const Total = ({ parts }) => {
+  // Calculate the total exercise using reduce()
+  const totalExercises = parts.reduce((acc, cur) => acc + cur.exercises, 0);
+
+  // Return <p> with totalExercises
+  return <p>Number of exercises {totalExercises}</p>;
 };
