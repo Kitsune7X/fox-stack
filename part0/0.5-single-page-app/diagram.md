@@ -1,3 +1,5 @@
+# 0.5 Single Page App
+
 ```mermaid
 sequenceDiagram
     participant browser
