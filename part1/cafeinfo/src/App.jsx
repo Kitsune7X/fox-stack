@@ -11,11 +11,12 @@ const App = () => {
 
   // Set click value
   const setClick = (feedback) => {
+    console.log(`good: ${good}, bad: ${bad}, neutral: ${neutral}`)
     // Practice using Ternary operator
-    feedback === "good" ? console.log("Good feedback")
-    : feedback === "neutral" 
-      ? console.log("Neutral feedback")
-      : console.log("Bad feedback")
+    return feedback === "good" ? setGood(good + 1)
+          : feedback === "neutral" 
+            ? setNeutral(neutral + 1)
+            : setBad(bad + 1)
   } 
 
   return (
@@ -27,6 +28,7 @@ const App = () => {
     <Button onClick={() => setClick("bad")} text="bad" />
     </div>
     <Header header = "statistics" />
+    <DisplayStat good={good} neutral={neutral} bad={bad} />
     </>
   )
 };
@@ -43,3 +45,14 @@ const Header = ({header}) => <h2>{header}</h2>
 
 // ---------- Buttons ----------
 const Button = ({onClick, text}) => <button onClick={onClick}>{text}</button>
+
+// ---------- Display Stats ----------
+const DisplayStat = ({good, neutral, bad}) => {
+  return (
+    <div>
+      <p>good {good}</p>
+      <p>neutral {neutral}</p>
+      <p>bad {bad}</p>
+    </div>
+  )
+}
