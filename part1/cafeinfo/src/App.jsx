@@ -34,7 +34,11 @@ const App = () => {
   };
 
   // Calculate positive percent
-  const calcPositivePercent = () => (good / countFeedback()) * 100;
+  const calcPositivePercent = () => {
+    const per =
+      (good / countFeedback()) * 100 ? (good / countFeedback()) * 100 : 0;
+    return per;
+  };
 
   return (
     <>
@@ -45,7 +49,7 @@ const App = () => {
         <Button onClick={() => handleFeedback("bad")} text="bad" />
       </div>
       <Header header="statistics" />
-      <DisplayStat
+      <Statistics
         good={good}
         neutral={neutral}
         bad={bad}
@@ -69,16 +73,33 @@ const Header = ({ header }) => <h2>{header}</h2>;
 // ---------- Buttons ----------
 const Button = ({ onClick, text }) => <button onClick={onClick}>{text}</button>;
 
-// ---------- Display Stats ----------
-const DisplayStat = ({ good, neutral, bad, all, avg, percent }) => {
-  return (
+// ---------- Statistics ----------
+const Statistics = ({ good, neutral, bad, all, avg, percent }) => {
+  return all ? (
     <div>
-      <p>good {good}</p>
-      <p>neutral {neutral}</p>
-      <p>bad {bad}</p>
-      <p>all {all}</p>
-      <p>average {avg}</p>
-      <p>percent {percent} %</p>
+      <StatisticLine text="good" value={good} />
+      <StatisticLine text="neutral" value={neutral} />
+      <StatisticLine text="bad" value={bad} />
+      <StatisticLine text="all" value={all} />
+      <StatisticLine text="avg" value={avg} />
+      <StatisticLine text="positive" value={percent} />
     </div>
+  ) : (
+    <div>
+      <p>No feedback given</p>
+    </div>
+  );
+};
+
+// ---------- Statistic Line ----------
+const StatisticLine = ({ text, value }) => {
+  return text === "positive" ? (
+    <p>
+      {text} {value} %
+    </p>
+  ) : (
+    <p>
+      {text} {value}
+    </p>
   );
 };
