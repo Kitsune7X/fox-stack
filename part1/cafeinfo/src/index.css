@@ -11,6 +11,9 @@
 html {
   font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji";
+  /* Dark theme for my eyes */
+  background-color: #111827;
+  color: #e5e7eb;
 }
 
 /* Remove user agent margins so spacing is always intentional */

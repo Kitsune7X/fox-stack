@@ -8,9 +8,6 @@ const App = () => {
   // Total points
   const [totalPoint, setTotalPoint] = useState(0);
 
-  // Need to write function to set how many time each button is clicked
-  // Depend on what button, accumulate score
-
   // `handleFeedback()` that take what user click as argument
   // and update feedback value accordingly
   const handleFeedback = (feedback) => {
@@ -36,6 +33,9 @@ const App = () => {
     return avg;
   };
 
+  // Calculate positive percent
+  const calcPositivePercent = () => (good / countFeedback()) * 100;
+
   return (
     <>
       <div>
@@ -51,6 +51,7 @@ const App = () => {
         bad={bad}
         all={countFeedback()}
         avg={calcAvg()}
+        percent={calcPositivePercent()}
       />
     </>
   );
@@ -69,7 +70,7 @@ const Header = ({ header }) => <h2>{header}</h2>;
 const Button = ({ onClick, text }) => <button onClick={onClick}>{text}</button>;
 
 // ---------- Display Stats ----------
-const DisplayStat = ({ good, neutral, bad, all, avg }) => {
+const DisplayStat = ({ good, neutral, bad, all, avg, percent }) => {
   return (
     <div>
       <p>good {good}</p>
@@ -77,6 +78,7 @@ const DisplayStat = ({ good, neutral, bad, all, avg }) => {
       <p>bad {bad}</p>
       <p>all {all}</p>
       <p>average {avg}</p>
+      <p>percent {percent} %</p>
     </div>
   );
 };
