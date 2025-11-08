@@ -1,0 +1,87 @@
+/* Minimal reset layer */
+
+/* Better box model */
+*,
+::before,
+::after {
+  box-sizing: border-box;
+}
+
+/* Establish a resilient system font stack for consistent typography */
+html {
+  font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji";
+  /* Dark theme for my eyes */
+  background-color: #111827;
+  color: #e5e7eb;
+}
+
+/* Remove user agent margins so spacing is always intentional */
+* {
+  margin: 0;
+}
+
+/* Allow keyword-driven size interpolation when motion is permitted */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    interpolate-size: allow-keywords;
+  }
+}
+
+/* Ease reading with a relaxed line height and macOS font smoothing */
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Make embedded media block-level and fluid by default */
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* Ensure interactive controls inherit the surrounding font choices */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+/* Keep long words and headings from breaking layout boxes */
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+
+/* Ask browsers for gentler paragraph wrapping to soften ragged edges */
+p {
+  text-wrap: pretty;
+}
+
+/* Headings inherit the base font and balance multi-line titles */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: inherit;
+  text-wrap: balance;
+}
+
+/* Hide default markers only on lists opted-in with role="list" for custom styling */
+ol[role="list"],
+ul[role="list"] {
+  list-style: none;
+  padding-inline: 0;
+}
