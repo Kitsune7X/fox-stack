@@ -42,7 +42,7 @@ const Header = ({ name }) => {
 // From React docs https://react.dev/learn/passing-props-to-a-component
 // When you nest content inside a JSX tag, the parent component will receive that content in a prop called `children`.
 
-// Passing an array as method
+// Passing an array as parameter method
 // From React docs https://react.dev/learn/rendering-lists
 const Content = ({ parts }) => {
   // Transform each part into a paragraph element
