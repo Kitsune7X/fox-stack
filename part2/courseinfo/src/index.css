@@ -79,9 +79,9 @@ h6 {
   text-wrap: balance;
 }
 
-/* Hide default markers only on lists opted-in with role="list" for custom styling */
-ol[role="list"],
-ul[role="list"] {
+/* Hide default markers  */
+ol,
+ul {
   list-style: none;
   padding-inline: 0;
 }
