@@ -22,7 +22,7 @@ const App = () => {
     ],
   };
 
-  // Render the header, content list, and total summary
+  // Render the header, content list
   return <Course course={course} />;
 };
 
@@ -32,39 +32,41 @@ export default App;
 // * Components — START
 // ==============================
 // ---------- Course component ----------
-// From React docs https://react.dev/learn/passing-props-to-a-component#passing-jsx-as-children
-// When you nest content inside a JSX tag, the parent component will receive that content in a prop called `children`.
+// Descontruct props into `course`
 const Course = ({ course }) => {
-  console.log(course);
-  console.log(typeof course);
-
-  // Rendering the Header component
   return (
     <div>
-      <Header key={course.id} name={course.name} />
+      <Header name={course.name} />
+      <Content parts={course.parts} />
     </div>
   );
 };
 
 // ---------- Header component ----------
-// Deconstruct prop object into `name` primitive
+// Deconstruct prop object into `name`
 const Header = ({ name }) => <h1>{name}</h1>;
 
 // ---------- Content component ----------
-// Passing an array as parameter method
+// Deconstruct props into `parts`. `parts` is
+// an array of objects
 // From React docs https://react.dev/learn/rendering-lists
 const Content = ({ parts }) => {
-  // Transform each part into a paragraph element
-  const partList = parts.map((item) => (
-    // Add key as React need key
-    <p key={item.name}>
-      {item.name} {item.exercises}
-    </p>
-  ));
-
-  // Inject the generated list into the DOM
-  return <div>{partList}</div>;
+  return (
+    // Map the array into a new array containing name and number of exercises
+    <div>
+      {parts.map((item) => (
+        <Part key={item.id} name={item.name} exercises={item.exercises} />
+      ))}
+    </div>
+  );
 };
+
+// ---------- Part component ----------
+const Part = ({ name, exercises }) => (
+  <p>
+    {name} {exercises}
+  </p>
+);
 
 // ---------- Total component ----------
 const Total = ({ parts }) => {
