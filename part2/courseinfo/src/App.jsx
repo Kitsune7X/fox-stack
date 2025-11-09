@@ -44,8 +44,8 @@ const App = () => {
     },
   ];
 
-  // Render the header, content list
-  return <AllCourses courses={courses} />;
+  // Render the Course list
+  return <Course courses={courses} />;
 };
 
 export default App;
@@ -53,28 +53,21 @@ export default App;
 // ==============================
 // * Components — START
 // ==============================
-// ---------- All Courses component ----------
+// ---------- Courses component ----------
 // Descontruct props into `courses`
-const AllCourses = ({ courses }) => {
+const Course = ({ courses }) => {
   // `courses` is an array of object. Map the `courses` array to
   // a new array where each item `course` is an object which then be passed
-  // to Course component as parameter
+  // Header, Content and Total as parameter
   return (
     <div>
       {courses.map((course) => (
-        <Course key={course.id} course={course} />
+        <div key={course.id}>
+          <Header name={course.name} />
+          <Content parts={course.parts} />
+          <Total parts={course.parts} />
+        </div>
       ))}
-    </div>
-  );
-};
-
-// ---------- Single Course Component ----------
-const Course = ({ course }) => {
-  return (
-    <div>
-      <Header name={course.name} />
-      <Content parts={course.parts} />
-      <Total parts={course.parts} />
     </div>
   );
 };
@@ -110,7 +103,7 @@ const Total = ({ parts }) => {
   // Calculate the total number of exercises across all parts
   const totalExercises = parts.reduce((acc, cur) => acc + cur.exercises, 0);
 
-  // Present the aggregate exercise count to the user
+  // Present the total exercise count to the user
   return (
     <p>
       <strong>total of {totalExercises} exercises</strong>
