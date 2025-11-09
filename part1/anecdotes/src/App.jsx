@@ -1,4 +1,4 @@
-import { use, useState } from "react";
+import { useState } from "react";
 
 const App = () => {
   const anecdotes = [
@@ -12,15 +12,17 @@ const App = () => {
     "The only way to go fast, is to go well.",
   ];
 
+  const [selected, setSelected] = useState(0);
+
   // Initialize an array filled with 0 that has the same
   // length as the anecdotes array length
   const votes = Array(anecdotes.length).fill(0);
 
-  const [selected, setSelected] = useState(0);
-
   const [vote, setVote] = useState(votes);
 
-  // Generate random index and filter it
+  // ==============================
+  // * Functions — START
+  // ==============================
 
   // ---------- Create random index function ----------
   const createRandomIndex = (arr) => Math.floor(Math.random() * arr.length);
@@ -42,27 +44,29 @@ const App = () => {
     setVote(copy);
   };
 
+  // ---------- Find index of highest vote function ----------
   // Find the max vote value with Math.max()
-  console.log(Math.max(...vote));
-
-  // Find the index of the max value
-  console.log(vote.findIndex((item) => item === Math.max(...vote)));
-
+  // and then find the index of that value
   const findHighestVoteIndex = (arr) =>
     arr.findIndex((item) => item === Math.max(...arr));
+
+  // ==============================
+  // * Functions — END
+  // ==============================
 
   return (
     <div>
       <Header text="Anecdote of the day" />
       <AnecdotesDisplay item={anecdotes[selected]} />
-      <p>has {vote[selected]} votes</p>
+      <VotesDisplay item={vote[selected]} />
       <Button
         onClick={() => setRandomAnecdotes(anecdotes)}
         text="next anecdotes"
       />
       <Button onClick={() => updateVote()} text="Vote" />
       <Header text="Anecdote with most votes" />
-      <p>Highest vote index {findHighestVoteIndex(vote)}</p>
+      <AnecdotesDisplay item={anecdotes[findHighestVoteIndex(vote)]} />
+      <VotesDisplay item={vote[findHighestVoteIndex(vote)]} />
     </div>
   );
 };
@@ -76,7 +80,7 @@ export default App;
 const AnecdotesDisplay = ({ item }) => <p>{item}</p>;
 
 // ---------- Vote display ----------
-const VotesDisplay = ({ item }) => <p>{item}</p>;
+const VotesDisplay = ({ item }) => <p>has {item} votes</p>;
 
 // ---------- Header ----------
 const Header = ({ text }) => <h2>{text}</h2>;
