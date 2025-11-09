@@ -23,16 +23,7 @@ const App = () => {
   };
 
   // Render the header, content list, and total summary
-  return (
-    <div>
-      <Header name={course.name} />
-
-      <Content parts={course.parts} />
-
-      <Total parts={course.parts} />
-      <Course course={course} />
-    </div>
-  );
+  return <Course course={course} />;
 };
 
 export default App;
@@ -45,15 +36,19 @@ export default App;
 // When you nest content inside a JSX tag, the parent component will receive that content in a prop called `children`.
 const Course = ({ course }) => {
   console.log(course);
-  console.table(course);
   console.log(typeof course);
+
+  // Rendering the Header component
+  return (
+    <div>
+      <Header key={course.id} name={course.name} />
+    </div>
+  );
 };
 
 // ---------- Header component ----------
 // Deconstruct prop object into `name` primitive
-const Header = ({ name }) => {
-  return <h1>{name}</h1>;
-};
+const Header = ({ name }) => <h1>{name}</h1>;
 
 // ---------- Content component ----------
 // Passing an array as parameter method
