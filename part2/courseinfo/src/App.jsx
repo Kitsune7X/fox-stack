@@ -1,5 +1,4 @@
 const App = () => {
-  // Static course definition used to feed child components
   const course = {
     id: 1,
     name: "Half Stack application development",
@@ -38,6 +37,7 @@ const Course = ({ course }) => {
     <div>
       <Header name={course.name} />
       <Content parts={course.parts} />
+      <Total parts={course.parts} />
     </div>
   );
 };
@@ -74,7 +74,11 @@ const Total = ({ parts }) => {
   const totalExercises = parts.reduce((acc, cur) => acc + cur.exercises, 0);
 
   // Present the aggregate exercise count to the user
-  return <p>Number of exercises {totalExercises}</p>;
+  return (
+    <p>
+      <strong>total of {totalExercises} exercises</strong>
+    </p>
+  );
 };
 
 // ==============================
