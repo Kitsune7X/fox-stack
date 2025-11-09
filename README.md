@@ -1,3 +1,3 @@
 # Fox Stack
 
-Exercises repository for Full Stack Course.
+Repository for Full Stack Course.
