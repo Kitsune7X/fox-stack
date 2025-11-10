@@ -16,8 +16,6 @@ const App = () => {
 
   const [searchTerm, setSearchTerm] = useState("");
 
-  const [filter, setFilter] = useState([]);
-
   // ==============================
   // * Functions — START
   // ==============================
@@ -57,12 +55,12 @@ const App = () => {
     setNewNumber("");
   };
 
-  // ---------- Search function ----------
+  // ---------- Filter function ----------
   // Using searchTerm, iterate through `person` array of objects
   // For each element in the array, search for a match between `searchTerm`
   // and person's name by using regex and search()
   // If search result is succed, return new array of filtered person
-  const searchContact = (term, list) => {
+  const filterContact = (term, list) => {
     // Filter the `list` array into a new array containing element that match search term
     return list.filter((contact) => {
       // Convert search term to lowercase then use
@@ -75,7 +73,7 @@ const App = () => {
     });
   };
 
-  console.log(searchContact("er", person));
+  console.log(filterContact("er", person));
 
   // ==============================
   // * Functions — END
@@ -85,8 +83,10 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      {/* Filter section */}
       <Search term={searchTerm} setTerm={setSearchTerm} />
-      <p>debug: {searchTerm}</p>
+
+      {/* Add Contact section */}
       <form onSubmit={addContact}>
         <div>
           name:
@@ -108,8 +108,12 @@ const App = () => {
           <button type="submit">add</button>
         </div>
       </form>
+
+      {/* Display Contact section */}
       <h2>Numbers</h2>
-      <Display contacts={person} />
+      <Display
+        contacts={searchTerm ? filterContact(searchTerm, person) : person}
+      />
     </div>
   );
 };
@@ -128,7 +132,7 @@ const Display = ({ contacts }) => (
   </ul>
 );
 
-// ---------- Search field component ----------
+// ---------- Filter component ----------
 const Search = ({ term, setTerm }) => {
   return (
     <div>
@@ -149,15 +153,3 @@ const Search = ({ term, setTerm }) => {
 // ==============================
 
 export default App;
-
-// To make the filter, first iterate through
-// the array, then for each element search for match with regex
-const str = "Arctic Fox";
-console.log(str.toLowerCase());
-
-const word = "CT";
-
-const re = new RegExp(word.toLowerCase());
-console.log(re);
-
-console.log(str.search(re));
