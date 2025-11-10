@@ -14,7 +14,7 @@ const App = () => {
 
   const [newNumber, setNewNumber] = useState("");
 
-  const [searchTerm, setSearchTerm] = useState("");
+  const [filter, setFilter] = useState("");
 
   // ==============================
   // * Functions — START
@@ -84,7 +84,7 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
       {/* Filter section */}
-      <Search term={searchTerm} setTerm={setSearchTerm} />
+      <Filter term={filter} setTerm={setFilter} />
 
       {/* Add Contact section */}
       <form onSubmit={addContact}>
@@ -111,9 +111,7 @@ const App = () => {
 
       {/* Display Contact section */}
       <h2>Numbers</h2>
-      <Display
-        contacts={searchTerm ? filterContact(searchTerm, person) : person}
-      />
+      <Display contacts={filter ? filterContact(filter, person) : person} />
     </div>
   );
 };
@@ -133,7 +131,7 @@ const Display = ({ contacts }) => (
 );
 
 // ---------- Filter component ----------
-const Search = ({ term, setTerm }) => {
+const Filter = ({ term, setTerm }) => {
   return (
     <div>
       <label>
