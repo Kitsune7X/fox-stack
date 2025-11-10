@@ -30,6 +30,7 @@ const App = () => {
     const newContact = {
       name: newName,
       number: newNumber,
+      id: person.length + 1,
     };
     // Check for duplicate, then either showing the error or
     // update the contact list
@@ -154,7 +155,7 @@ const Field = ({ value, onChange, required, children }) => (
 const Display = ({ contacts }) => (
   <ul>
     {contacts.map((contact) => (
-      <li key={contact.name}>
+      <li key={contact.id}>
         {contact.name} {contact.number}
       </li>
     ))}
