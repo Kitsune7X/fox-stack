@@ -73,8 +73,6 @@ const App = () => {
     });
   };
 
-  console.log(filterContact("er", person));
-
   // ==============================
   // * Functions — END
   // ==============================
@@ -97,7 +95,7 @@ const App = () => {
           />
         </div>
         <div>
-          number:{" "}
+          number:
           <input
             value={newNumber}
             onChange={(e) => setNewNumber(e.target.value)}
@@ -145,6 +143,9 @@ const Filter = ({ term, setTerm }) => {
     </div>
   );
 };
+
+// ---------- Add Contact component ----------
+// const AddContact = ()
 
 // ==============================
 // * Components — END
