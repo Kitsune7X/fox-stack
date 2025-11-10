@@ -79,15 +79,15 @@ const App = () => {
   const searchThrough = (term, name) => {
     // Convert search term to lowercase then use
     // RegEx constructor to make it into a regex
-    const re = new RegExp(term.toLowerCase());
-
-    const nameLC = name.toLowerCase();
-
-    return nameLC.search(re) !== -1;
+    const re = new RegExp(term.toLowerCase()); // Expected output: /term/
+    //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/search
+    // Convert `name` into all lowercase then
+    // search for a match between `re` and the converted string. Anything other than -1 is true
+    return name.toLowerCase().search(re) !== -1;
   };
   console.log(searchThrough("er", "River Otter"));
 
-  searchContact("er", person);
+  // searchContact("er", person);
   // ==============================
   // * Functions — END
   // ==============================
