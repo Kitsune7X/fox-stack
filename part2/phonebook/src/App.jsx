@@ -16,6 +16,8 @@ const App = () => {
 
   const [searchTerm, setSearchTerm] = useState("");
 
+  const [filter, setFilter] = useState([]);
+
   // ==============================
   // * Functions — START
   // ==============================
@@ -56,38 +58,25 @@ const App = () => {
   };
 
   // ---------- Search function ----------
-  // Using searchTerm, iterate through `person` array
-  // Need to convert all element in the array to lowercase
-  // If search result is succed, return new array
+  // Using searchTerm, iterate through `person` array of objects
+  // For each element in the array, search for a match between `searchTerm`
+  // and person's name by using regex and search()
+  // If search result is succed, return new array of filtered person
   const searchContact = (term, list) => {
-    // Convert search term to lowercase then use
-    // RegEx constructor to make it into a regex
-    const re = new RegExp(term.toLowerCase());
-
-    // Map the list array to a new array of all lowercase
-    const listLowerCase = list.map((item) => item.name.toLowerCase());
-    // .map((item) => item.toLowerCase());
-    console.log(listLowerCase);
-    // Search through the array for match
-    const filter = listLowerCase.filter((item) => item.search(re) !== -1);
-    console.log(filter);
+    // Filter the `list` array into a new array containing element that match search term
+    return list.filter((contact) => {
+      // Convert search term to lowercase then use
+      // RegEx constructor to make it into a regex
+      const re = new RegExp(term.toLowerCase()); // Expected output: /term/
+      // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/search
+      // Convert `contact.name` into all lowercase then
+      // search for a match between `re` and the converted string. Anything other than -1 is true
+      return contact.name.toLowerCase().search(re) !== -1;
+    });
   };
 
-  // ---------- Search Through ----------
-  // This function is to check for matching pattern from search term
-  // to current name
-  const searchThrough = (term, name) => {
-    // Convert search term to lowercase then use
-    // RegEx constructor to make it into a regex
-    const re = new RegExp(term.toLowerCase()); // Expected output: /term/
-    //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/search
-    // Convert `name` into all lowercase then
-    // search for a match between `re` and the converted string. Anything other than -1 is true
-    return name.toLowerCase().search(re) !== -1;
-  };
-  console.log(searchThrough("er", "River Otter"));
+  console.log(searchContact("er", person));
 
-  // searchContact("er", person);
   // ==============================
   // * Functions — END
   // ==============================
