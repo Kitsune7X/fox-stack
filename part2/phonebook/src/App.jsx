@@ -55,6 +55,39 @@ const App = () => {
     setNewNumber("");
   };
 
+  // ---------- Search function ----------
+  // Using searchTerm, iterate through `person` array
+  // Need to convert all element in the array to lowercase
+  // If search result is succed, return new array
+  const searchContact = (term, list) => {
+    // Convert search term to lowercase then use
+    // RegEx constructor to make it into a regex
+    const re = new RegExp(term.toLowerCase());
+
+    // Map the list array to a new array of all lowercase
+    const listLowerCase = list.map((item) => item.name.toLowerCase());
+    // .map((item) => item.toLowerCase());
+    console.log(listLowerCase);
+    // Search through the array for match
+    const filter = listLowerCase.filter((item) => item.search(re) !== -1);
+    console.log(filter);
+  };
+
+  // ---------- Search Through ----------
+  // This function is to check for matching pattern from search term
+  // to current name
+  const searchThrough = (term, name) => {
+    // Convert search term to lowercase then use
+    // RegEx constructor to make it into a regex
+    const re = new RegExp(term.toLowerCase());
+
+    const nameLC = name.toLowerCase();
+
+    return nameLC.search(re) !== -1;
+  };
+  console.log(searchThrough("er", "River Otter"));
+
+  searchContact("er", person);
   // ==============================
   // * Functions — END
   // ==============================
@@ -87,7 +120,6 @@ const App = () => {
         </div>
       </form>
       <h2>Numbers</h2>
-      <p>debug: {newNumber}</p>
       <Display contacts={person} />
     </div>
   );
@@ -100,7 +132,7 @@ const App = () => {
 const Display = ({ contacts }) => (
   <ul>
     {contacts.map((contact) => (
-      <li key={contact.name}>
+      <li key={contact.id}>
         {contact.name} {contact.number}
       </li>
     ))}
@@ -132,5 +164,11 @@ export default App;
 // To make the filter, first iterate through
 // the array, then for each element search for match with regex
 const str = "Arctic Fox";
-const re = /e/;
+console.log(str.toLowerCase());
+
+const word = "CT";
+
+const re = new RegExp(word.toLowerCase());
+console.log(re);
+
 console.log(str.search(re));
