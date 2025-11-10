@@ -85,7 +85,7 @@ const App = () => {
       <Filter term={filter} setTerm={setFilter} />
 
       {/* Add Contact section */}
-      <form onSubmit={addContact}>
+      <AddContact onSubmit={addContact}>
         <Field
           value={newName}
           onChange={(e) => setNewName(e.target.value)}
@@ -100,10 +100,7 @@ const App = () => {
         >
           number:
         </Field>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      </AddContact>
 
       {/* Display Contact section */}
       <h2>Numbers</h2>
@@ -115,16 +112,6 @@ const App = () => {
 // ==============================
 // * Components — START
 // ==============================
-// ---------- Display ----------
-const Display = ({ contacts }) => (
-  <ul>
-    {contacts.map((contact) => (
-      <li key={contact.id}>
-        {contact.name} {contact.number}
-      </li>
-    ))}
-  </ul>
-);
 
 // ---------- Filter component ----------
 const Filter = ({ term, setTerm }) => {
@@ -143,17 +130,35 @@ const Filter = ({ term, setTerm }) => {
 };
 
 // ---------- Add Contact component ----------
-// const AddContact = ({onSubmit}) =>
+// https://react.dev/learn/passing-props-to-a-component#passing-jsx-as-children
+const AddContact = ({ onSubmit, children }) => {
+  return (
+    <form onSubmit={onSubmit}>
+      {children}
+      <div>
+        <button type="submit">add</button>
+      </div>
+    </form>
+  );
+};
 
 // ---------- Field component ----------
-// const Input = ({ value, onChange }) => (
-//   <input value={value} onChange={onChange} required={true} />
-// );
 const Field = ({ value, onChange, required, children }) => (
   <div>
     {children}
     <input value={value} onChange={onChange} required={required} />
   </div>
+);
+
+// ---------- Display ----------
+const Display = ({ contacts }) => (
+  <ul>
+    {contacts.map((contact) => (
+      <li key={contact.name}>
+        {contact.name} {contact.number}
+      </li>
+    ))}
+  </ul>
 );
 
 // ==============================
