@@ -59,7 +59,7 @@ const App = () => {
   // Using searchTerm, iterate through `person` array of objects
   // For each element in the array, search for a match between `searchTerm`
   // and person's name by using regex and search()
-  // If search result is succed, return new array of filtered person
+  // If search result is succeed, return new array of filtered person
   const filterContact = (term, list) => {
     // Filter the `list` array into a new array containing element that match search term
     return list.filter((contact) => {
@@ -80,28 +80,26 @@ const App = () => {
   // ---------- Rendering ----------
   return (
     <div>
-      <h2>Phonebook</h2>
+      <h2>Phone book</h2>
       {/* Filter section */}
       <Filter term={filter} setTerm={setFilter} />
 
       {/* Add Contact section */}
       <form onSubmit={addContact}>
-        <div>
+        <Field
+          value={newName}
+          onChange={(e) => setNewName(e.target.value)}
+          required={true}
+        >
           name:
-          <input
-            value={newName}
-            onChange={(e) => setNewName(e.target.value)}
-            required
-          />
-        </div>
-        <div>
+        </Field>
+        <Field
+          value={newNumber}
+          onChange={(e) => setNewNumber(e.target.value)}
+          required={true}
+        >
           number:
-          <input
-            value={newNumber}
-            onChange={(e) => setNewNumber(e.target.value)}
-            required
-          />
-        </div>
+        </Field>
         <div>
           <button type="submit">add</button>
         </div>
@@ -145,7 +143,18 @@ const Filter = ({ term, setTerm }) => {
 };
 
 // ---------- Add Contact component ----------
-// const AddContact = ()
+// const AddContact = ({onSubmit}) =>
+
+// ---------- Field component ----------
+// const Input = ({ value, onChange }) => (
+//   <input value={value} onChange={onChange} required={true} />
+// );
+const Field = ({ value, onChange, required, children }) => (
+  <div>
+    {children}
+    <input value={value} onChange={onChange} required={required} />
+  </div>
+);
 
 // ==============================
 // * Components — END
