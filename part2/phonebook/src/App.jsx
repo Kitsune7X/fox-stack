@@ -2,9 +2,13 @@ import { useState } from "react";
 import "./App.css";
 
 const App = () => {
-  const [person, setPerson] = useState([{ name: "Arto Hellas" }]);
+  const [person, setPerson] = useState([
+    { name: "Arto Hellas", number: "040-1234567" },
+  ]);
 
   const [newName, setNewName] = useState("");
+
+  const [newNumber, setNewNumber] = useState("");
 
   // ==============================
   // * Functions — START
@@ -19,6 +23,7 @@ const App = () => {
     // Initialize the contact object that store person info
     const newContact = {
       name: newName,
+      number: newNumber,
     };
     // Check for duplicate, then either showing the error or
     // update the contact list
@@ -41,6 +46,7 @@ const App = () => {
     setPerson(person.concat(newContact));
     // After updating contact list, reset input value
     setNewName("");
+    setNewNumber("");
   };
 
   // ==============================
@@ -54,13 +60,26 @@ const App = () => {
       <form onSubmit={addContact}>
         <div>
           name:
-          <input value={newName} onChange={(e) => setNewName(e.target.value)} />
+          <input
+            value={newName}
+            onChange={(e) => setNewName(e.target.value)}
+            required
+          />
+        </div>
+        <div>
+          number:{" "}
+          <input
+            value={newNumber}
+            onChange={(e) => setNewNumber(e.target.value)}
+            required
+          />
         </div>
         <div>
           <button type="submit">add</button>
         </div>
       </form>
       <h2>Numbers</h2>
+      <p>debug: {newNumber}</p>
       <Display contacts={person} />
     </div>
   );
@@ -73,7 +92,9 @@ const App = () => {
 const Display = ({ contacts }) => (
   <ul>
     {contacts.map((contact) => (
-      <li key={contact.name}>{contact.name}</li>
+      <li key={contact.name}>
+        {contact.name} {contact.number}
+      </li>
     ))}
   </ul>
 );
