@@ -1,5 +1,5 @@
 // ---------- Courses component ----------
-// Descontruct props into `courses`
+// Deconstruct props into `courses`
 const Course = ({ courses }) => {
   // `courses` is an array of object. Map the `courses` array to
   // a new array where each item `course` is an object which then be passed
