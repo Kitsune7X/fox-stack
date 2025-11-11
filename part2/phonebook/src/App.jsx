@@ -1,14 +1,8 @@
-import { useState } from "react";
-import "./App.css";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 const App = () => {
-  const [person, setPerson] = useState([
-    { id: 1, name: "Arctic Fox", number: "555-0101" },
-    { id: 2, name: "Golden Eagle", number: "555-0202" },
-    { id: 3, name: "River Otter", number: "555-0303" },
-    { id: 4, name: "Coral Seahorse", number: "555-0404" },
-    { id: 5, name: "Desert Lynx", number: "555-0505" },
-  ]);
+  const [person, setPerson] = useState([]);
 
   const [newName, setNewName] = useState("");
 
@@ -16,6 +10,16 @@ const App = () => {
 
   const [filter, setFilter] = useState("");
 
+  // Fetch data from server
+  const hook = () => {
+    console.log("effect");
+    axios.get("http://localhost:3001/persons").then((response) => {
+      console.log("fulfilled");
+      setPerson(response.data);
+    });
+  };
+
+  useEffect(hook, []);
   // ==============================
   // * Functions — START
   // ==============================
