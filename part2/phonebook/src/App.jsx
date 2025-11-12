@@ -48,7 +48,20 @@ const App = () => {
     if (a && checkExistingNumber(newNumber, a)) {
       showError(newName);
     } else if (a && !checkExistingNumber(newNumber, a)) {
-      console.log("WTF!");
+      if (window.confirm(`Do you want to update the number from ${a.name}?`)) {
+        const changedNumber = { ...a, number: newNumber };
+        axios
+          .put(`http://localhost:3001/persons/${a.id}`, changedNumber)
+          .then((response) => {
+            console.log(response.data);
+            const result = response.data;
+            setPerson(
+              person.map((item) => (item.id === result.id ? result : item))
+            );
+          });
+      } else {
+        alert(`No changes to ${a.name} has been made`);
+      }
     } else {
       updateContact(newContact);
     }
