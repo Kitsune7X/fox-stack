@@ -80,9 +80,14 @@ const App = () => {
   };
 
   // ---------- Delete Contact function ----------
-  // const erase = (id) => {
-  //   console.log(id);
-  // };
+  const erase = (id) => {
+    console.log(id);
+    axios.delete(`http://localhost:3001/persons/${id}`).then((response) => {
+      const result = response.data;
+      console.log(result);
+      setPerson(person.filter((item) => item.id !== result.id));
+    });
+  };
 
   // ==============================
   // * Functions — END
@@ -116,7 +121,15 @@ const App = () => {
       {/* Display Contact section */}
       <h2>Numbers</h2>
 
-      <Display contacts={filter ? filterContact(filter, person) : person} />
+      {/* <Display contacts={filter ? filterContact(filter, person) : person} /> */}
+      <ul>
+        {person.map((item) => (
+          <li key={item.id}>
+            {item.name} {item.number}
+            <button onClick={() => erase(item.id)}>delete</button>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };
