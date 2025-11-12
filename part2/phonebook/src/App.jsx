@@ -9,6 +9,11 @@ const App = () => {
   const [newNumber, setNewNumber] = useState("");
   const [filter, setFilter] = useState("");
   const [message, setMessage] = useState("");
+  const [error, setError] = useState(false);
+
+  // useEffect(() => {
+  //   setError(false);
+  // }, [message]);
 
   // Fetch data from server
   useEffect(() => {
@@ -26,8 +31,11 @@ const App = () => {
     setMessage(message);
     setTimeout(() => {
       setMessage("");
+      setError(false);
     }, 5000);
   };
+
+  // Need to use useEffect. When the message change, set state to false again
 
   // ---------- Add Contact function ----------
   // When the form get submitted, trigger `addContact` function that
@@ -66,7 +74,14 @@ const App = () => {
             // setNewNumber("");
           })
           .catch((error) => {
-            console.log(error);
+            // Set error to true to trigger class modification in Notification component
+            setError(true);
+            // Display the message
+            handleNotification(
+              `${matched.name} is already deleted from server.`
+            );
+            // Re render the contact list
+            setPerson(person.filter((item) => item.id !== matched.id));
           });
       } else handleNotification(`No changes to ${matched.name} has been made.`);
     } else {
@@ -138,7 +153,7 @@ const App = () => {
   return (
     <div>
       <h2>Phone book</h2>
-      <Notification message={message} />
+      <Notification message={message} isError={error} />
       {/* Filter section */}
       <Filter term={filter} setTerm={setFilter} />
 
@@ -166,7 +181,7 @@ const App = () => {
         contacts={filter ? filterContact(filter, person) : person}
         onClick={handleDelete}
       />
-      {/* <button onClick={() => handleDelete()}>debug button</button> */}
+      <button onClick={() => setError(!error)}>debug button</button>
     </div>
   );
 };

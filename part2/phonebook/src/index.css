@@ -173,3 +173,8 @@ button:focus-visible {
   border: 1px solid #606060;
   border-radius: 7px;
 }
+
+.error {
+  background-color: #f9f9f9;
+  color: #1a1a1a;
+}
