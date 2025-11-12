@@ -9,11 +9,7 @@ const getAll = () => {
 
 // Add new contact to server
 const create = (newContact) => {
-  return axios.post(baseUrl, newContact).then((response) => {
-    console.log(response.data);
-
-    response.data;
-  });
+  return axios.post(baseUrl, newContact).then((response) => response.data);
 };
 
 export default { getAll, create };

@@ -1,11 +1,8 @@
 import { useState, useEffect } from "react";
 import phoneBookService from "./services/phone-book";
-import axios from "axios";
 
 const App = () => {
   const [person, setPerson] = useState([]);
-  const update = person;
-  console.log(update);
 
   const [newName, setNewName] = useState("");
 
@@ -52,12 +49,9 @@ const App = () => {
 
   // ---------- Update Contact list function ----------
   const updateContact = (newContact) => {
-    axios.post("http://localhost:3001/persons", newContact).then((response) => {
-      console.log(response.data);
-      setPerson(person.concat(response.data));
+    phoneBookService.create(newContact).then((returnedContact) => {
+      setPerson(person.concat(returnedContact));
     });
-    console.log(person);
-    // console.log(a);
 
     // Update the `person` array by concat it `newContact` object
 
@@ -115,7 +109,7 @@ const App = () => {
 
       {/* Display Contact section */}
       <h2>Numbers</h2>
-      {/* It doesn't break now when I set it to `person`. Why? No fucking idea */}
+
       <Display contacts={filter ? filterContact(filter, person) : person} />
     </div>
   );
@@ -155,30 +149,24 @@ const AddContact = ({ onSubmit, children }) => {
 };
 
 // ---------- Field component ----------
-const Field = ({ value, onChange, required, children }) => (
-  <div>
-    {children}
-    <input value={value} onChange={onChange} required={required} />
-  </div>
-);
+const Field = ({ value, onChange, required, children }) => {
+  return (
+    <div>
+      {children}
+      <input value={value} onChange={onChange} required={required} />
+    </div>
+  );
+};
 
 // ---------- Display ----------
 const Display = ({ contacts }) => {
-  console.log(contacts);
-  // console.log(contacts.name);
-
   return (
     <ul>
-      {contacts.map(
-        (contact) => (
-          console.log(contact.name),
-          (
-            <li key={contact.id}>
-              {contact.name} {contact.number}
-            </li>
-          )
-        )
-      )}
+      {contacts.map((contact) => (
+        <li key={contact.id}>
+          {contact.name} {contact.number}
+        </li>
+      ))}
     </ul>
   );
 };
