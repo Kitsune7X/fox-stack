@@ -54,8 +54,6 @@ const App = () => {
       setPerson(person.concat(returnedContact));
     });
 
-    // Update the `person` array by concat it `newContact` object
-
     // After updating contact list, reset input value
     setNewName("");
     setNewNumber("");
@@ -79,12 +77,15 @@ const App = () => {
     });
   };
 
+  // ---------- Handle Click function ----------
+  const handleClick = (name, id) => {
+    window.confirm(`Delete ${name}?`) ? erase(id) : alert("( ˶ˆ ᗜ ˆ˵ )");
+  };
+
   // ---------- Delete Contact function ----------
   const erase = (id) => {
-    console.log(id);
     axios.delete(`http://localhost:3001/persons/${id}`).then((response) => {
       const result = response.data;
-      console.log(result);
       setPerson(person.filter((item) => item.id !== result.id));
     });
   };
@@ -123,8 +124,9 @@ const App = () => {
 
       <Display
         contacts={filter ? filterContact(filter, person) : person}
-        onErase={erase}
+        onClick={handleClick}
       />
+      <button onClick={() => handleClick()}>debug button</button>
       {/* <ul>
         {person.map((item) => (
           <li key={item.id}>
@@ -181,13 +183,15 @@ const Field = ({ value, onChange, required, children }) => {
 };
 
 // ---------- Display ----------
-const Display = ({ contacts, onErase }) => {
+const Display = ({ contacts, onClick }) => {
   return (
     <ul>
       {contacts.map((contact) => (
         <li key={contact.id}>
           {contact.name} {contact.number}
-          <button onClick={() => onErase(contact.id)}>delete</button>
+          <button onClick={() => onClick(contact.name, contact.id)}>
+            delete
+          </button>
         </li>
       ))}
     </ul>
@@ -199,10 +203,3 @@ const Display = ({ contacts, onErase }) => {
 // ==============================
 
 export default App;
-
-// Delete data
-// Set up delete button
-// When the button is clicked, trigger DELETE method to the server
-// Re-render the new list
-// Need to put the erase function to App component
-// How the fuck do I pass the correct id of the element from the array separately?
