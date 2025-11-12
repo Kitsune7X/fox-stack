@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import phoneBookService from "./services/phone-book";
 
 const App = () => {
   const [person, setPerson] = useState([]);
@@ -11,15 +11,12 @@ const App = () => {
   const [filter, setFilter] = useState("");
 
   // Fetch data from server
-  const hook = () => {
-    console.log("effect");
-    axios.get("http://localhost:3001/persons").then((response) => {
-      console.log("fulfilled");
-      setPerson(response.data);
-    });
-  };
+  useEffect(() => {
+    phoneBookService
+      .getAll()
+      .then((initialContact) => setPerson(initialContact));
+  }, []);
 
-  useEffect(hook, []);
   // ==============================
   // * Functions — START
   // ==============================
@@ -49,7 +46,7 @@ const App = () => {
     list.some((item) => name === item.name);
 
   // ---------- Show Error function ----------
-  const showError = (name) => alert(`${name} is already added to phonebook`);
+  const showError = (name) => alert(`${name} is already added to phone book`);
 
   // ---------- Update Contact list function ----------
   const updateContact = (newContact) => {
