@@ -19,6 +19,16 @@
       "name": "Mary Poppendieck",
       "number": "39-23-6423122",
       "id": "4"
+    },
+    {
+      "id": "829e",
+      "name": "Ada Wong",
+      "number": "555-01117"
+    },
+    {
+      "id": "a809",
+      "name": "Leon S. Kennedy",
+      "number": "555-011121"
     }
   ]
 }

@@ -28,13 +28,11 @@ const App = () => {
   // value for`name` key and concat it to `person` array
   const addContact = (e) => {
     e.preventDefault();
-    // Initialize the contact object that store person info
-    const newContact = {
-      name: newName,
-      number: newNumber,
-    };
-    // Check for duplicate, then either showing the error or
-    // update the contact list
+
+    // Check for matching name in the database. If there is a match,
+    // check if the number also matches. If both match, show error, otherwise, ask
+    // user if they want to update the number
+    // If none matches, add new contact to database
     const matched = person.find((item) => newName === item.name);
 
     if (matched && matchNumber(newNumber, matched.number)) showError(newName);
@@ -44,20 +42,27 @@ const App = () => {
           `${matched.name} is already added to phone book, replace the old number with new one?`
         )
       ) {
-        const changedNumber = { ...matched, number: newNumber };
-        axios
-          .put(`http://localhost:3001/persons/${matched.id}`, changedNumber)
-          .then((response) => {
-            console.log(response.data);
-            const result = response.data;
+        const changedNumber = { ...matched, number: newNumber }; // Use spread to make a copy of `matched` then update `number` property
+
+        phoneBookService
+          .updateNumber(matched.id, changedNumber)
+          .then((returnedContact) => {
             setPerson(
-              person.map((item) => (item.id === result.id ? result : item))
+              person.map((item) =>
+                item.id === returnedContact.id ? returnedContact : item
+              )
             );
+            // Keep this off during testing for convenience
+            // setNewName("");
+            // setNewNumber("");
           });
-      } else {
-        alert(`No changes to ${matched.name} has been made`);
-      }
+      } else alert(`No changes to ${matched.name} has been made`);
     } else {
+      // Initialize the contact object that store person info
+      const newContact = {
+        name: newName,
+        number: newNumber,
+      };
       updateContact(newContact);
     }
   };
@@ -147,7 +152,7 @@ const App = () => {
         contacts={filter ? filterContact(filter, person) : person}
         onClick={handleDelete}
       />
-      <button onClick={() => handleDelete()}>debug button</button>
+      {/* <button onClick={() => handleDelete()}>debug button</button> */}
     </div>
   );
 };

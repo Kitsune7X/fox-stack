@@ -17,4 +17,11 @@ const remove = (id) => {
   return axios.delete(`${baseUrl}/${id}`).then((response) => response.data);
 };
 
-export default { getAll, create, remove };
+// Update number
+const updateNumber = (id, newNumber) => {
+  return axios
+    .put(`${baseUrl}/${id}`, newNumber)
+    .then((response) => response.data);
+};
+
+export default { getAll, create, remove, updateNumber };
