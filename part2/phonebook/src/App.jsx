@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import phoneBookService from "./services/phone-book";
+import axios from "axios";
 
 const App = () => {
   const [person, setPerson] = useState([]);
@@ -77,6 +78,11 @@ const App = () => {
       return contact.name.toLowerCase().search(re) !== -1;
     });
   };
+
+  // ---------- Delete Contact function ----------
+  // const erase = (id) => {
+  //   console.log(id);
+  // };
 
   // ==============================
   // * Functions — END
@@ -160,11 +166,18 @@ const Field = ({ value, onChange, required, children }) => {
 
 // ---------- Display ----------
 const Display = ({ contacts }) => {
+  const erase = (id) => {
+    console.log(id);
+    axios.delete(`http://localhost:3001/persons/${id}`).then((response) => {
+      console.log(response.data);
+    });
+  };
   return (
     <ul>
       {contacts.map((contact) => (
         <li key={contact.id}>
           {contact.name} {contact.number}
+          <button onClick={() => erase(contact.id)}>delete</button>
         </li>
       ))}
     </ul>
@@ -176,3 +189,10 @@ const Display = ({ contacts }) => {
 // ==============================
 
 export default App;
+
+// Delete data
+// Set up delete button
+// When the button is clicked, trigger DELETE method to the server
+// Re-render the new list
+// Need to put the erase function to App component
+// How the fuck do I pass the correct id of the element from the array separately?
