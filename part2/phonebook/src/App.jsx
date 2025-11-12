@@ -35,15 +35,41 @@ const App = () => {
     };
     // Check for duplicate, then either showing the error or
     // update the contact list
-    checkDuplicate(newName, person)
-      ? showError(newName)
-      : updateContact(newContact);
+    // checkExistingName(newName, newNumber, person)
+    //   ? showError(newName)
+    //   : updateContact(newContact);
+    const a = person.find((item) => newName === item.name);
+    // console.log(a);
+    // console.log(typeof a.number);
+    // console.log(typeof newNumber);
+    // console.log(checkExistingNumber(newNumber, a.number));
+    // console.log(newNumber === a.number);
+
+    if (a && checkExistingNumber(newNumber, a)) {
+      showError(newName);
+    } else if (a && !checkExistingNumber(newNumber, a)) {
+      console.log("WTF!");
+    } else {
+      updateContact(newContact);
+    }
   };
 
-  // ---------- Duplicate Check function ----------
+  // ---------- Existing Name Check function  ----------
   // Use some() to see if the array already contain the contact.
-  const checkDuplicate = (name, list) =>
-    list.some((item) => name === item.name);
+  const checkExistingName = (name, number, list) => {
+    const a = list.find((item) => name === item.name);
+    console.log(a);
+    console.log(a.number);
+    console.log(checkExistingNumber(number, a));
+
+    if (a && checkExistingNumber(number, a)) return true;
+    else if (a && !checkExistingNumber(number, a))
+      console.log("Do you want to update number ?");
+    else return false;
+  };
+
+  // ---------- Existing Number Check function ----------
+  const checkExistingNumber = (number, item) => number === item.number;
 
   // ---------- Show Error function ----------
   const showError = (name) => alert(`${name} is already added to phone book`);
@@ -77,8 +103,8 @@ const App = () => {
     });
   };
 
-  // ---------- Handle Click function ----------
-  const handleClick = (name, id) => {
+  // ---------- Handle Delete function ----------
+  const handleDelete = (name, id) => {
     window.confirm(`Delete ${name}?`) ? erase(id) : alert("( ˶ˆ ᗜ ˆ˵ )");
   };
 
@@ -131,9 +157,9 @@ const App = () => {
 
       <Display
         contacts={filter ? filterContact(filter, person) : person}
-        onClick={handleClick}
+        onClick={handleDelete}
       />
-      <button onClick={() => handleClick()}>debug button</button>
+      <button onClick={() => handleDelete()}>debug button</button>
     </div>
   );
 };
