@@ -84,11 +84,18 @@ const App = () => {
 
   // ---------- Delete Contact function ----------
   const erase = (id) => {
-    axios.delete(`http://localhost:3001/persons/${id}`).then((response) => {
-      const result = response.data;
-      setPerson(person.filter((item) => item.id !== result.id));
-    });
+    phoneBookService
+      .remove(id)
+      .then((returnedContact) =>
+        setPerson(person.filter((item) => item.id !== returnedContact.id))
+      );
   };
+
+  // Update number to existing user
+  // If the input name is the same with one of the name of the array
+  // then find the id of that object in the array. Pop window.confirm()
+  // function and update the data
+  // need to take newName as parameter to compare
 
   // ==============================
   // * Functions — END
@@ -127,14 +134,6 @@ const App = () => {
         onClick={handleClick}
       />
       <button onClick={() => handleClick()}>debug button</button>
-      {/* <ul>
-        {person.map((item) => (
-          <li key={item.id}>
-            {item.name} {item.number}
-            <button onClick={() => erase(item.id)}>delete</button>
-          </li>
-        ))}
-      </ul> */}
     </div>
   );
 };
