@@ -121,15 +121,18 @@ const App = () => {
       {/* Display Contact section */}
       <h2>Numbers</h2>
 
-      {/* <Display contacts={filter ? filterContact(filter, person) : person} /> */}
-      <ul>
+      <Display
+        contacts={filter ? filterContact(filter, person) : person}
+        onErase={erase}
+      />
+      {/* <ul>
         {person.map((item) => (
           <li key={item.id}>
             {item.name} {item.number}
             <button onClick={() => erase(item.id)}>delete</button>
           </li>
         ))}
-      </ul>
+      </ul> */}
     </div>
   );
 };
@@ -178,19 +181,13 @@ const Field = ({ value, onChange, required, children }) => {
 };
 
 // ---------- Display ----------
-const Display = ({ contacts }) => {
-  const erase = (id) => {
-    console.log(id);
-    axios.delete(`http://localhost:3001/persons/${id}`).then((response) => {
-      console.log(response.data);
-    });
-  };
+const Display = ({ contacts, onErase }) => {
   return (
     <ul>
       {contacts.map((contact) => (
         <li key={contact.id}>
           {contact.name} {contact.number}
-          <button onClick={() => erase(contact.id)}>delete</button>
+          <button onClick={() => onErase(contact.id)}>delete</button>
         </li>
       ))}
     </ul>
