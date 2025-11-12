@@ -1,15 +1,14 @@
 import { useState, useEffect } from "react";
 import phoneBookService from "./services/phone-book";
-import axios from "axios";
+import Notification from "./components/Notification";
+// import axios from "axios";
 
 const App = () => {
   const [person, setPerson] = useState([]);
-
   const [newName, setNewName] = useState("");
-
   const [newNumber, setNewNumber] = useState("");
-
   const [filter, setFilter] = useState("");
+  const [message, setMessage] = useState("");
 
   // Fetch data from server
   useEffect(() => {
@@ -21,6 +20,14 @@ const App = () => {
   // ==============================
   // * Functions — START
   // ==============================
+
+  // ---------- Handle Notification ----------
+  const handleNotification = (message) => {
+    setMessage(message);
+    setTimeout(() => {
+      setMessage("");
+    }, 5000);
+  };
 
   // ---------- Add Contact function ----------
   // When the form get submitted, trigger `addContact` function that
@@ -35,7 +42,8 @@ const App = () => {
     // If none matches, add new contact to database
     const matched = person.find((item) => newName === item.name);
 
-    if (matched && matchNumber(newNumber, matched.number)) showError(newName);
+    if (matched && matchNumber(newNumber, matched.number))
+      handleNotification(`${newName} is already added to phone book.`);
     else if (matched && !matchNumber(newNumber, matched.number)) {
       if (
         window.confirm(
@@ -52,11 +60,15 @@ const App = () => {
                 item.id === returnedContact.id ? returnedContact : item
               )
             );
+            handleNotification(`${returnedContact.name}'s Number was updated.`);
             // Keep this off during testing for convenience
             // setNewName("");
             // setNewNumber("");
+          })
+          .catch((error) => {
+            console.log(error);
           });
-      } else alert(`No changes to ${matched.name} has been made`);
+      } else handleNotification(`No changes to ${matched.name} has been made.`);
     } else {
       // Initialize the contact object that store person info
       const newContact = {
@@ -64,14 +76,13 @@ const App = () => {
         number: newNumber,
       };
       updateContact(newContact);
+
+      handleNotification(`${newName} was added to Contact list`);
     }
   };
 
   // ---------- Existing Number Check function ----------
   const matchNumber = (number1, number2) => number1 === number2;
-
-  // ---------- Show Error function ----------
-  const showError = (name) => alert(`${name} is already added to phone book`);
 
   // ---------- Update Contact list function ----------
   const updateContact = (newContact) => {
@@ -104,16 +115,19 @@ const App = () => {
 
   // ---------- Handle Delete function ----------
   const handleDelete = (name, id) => {
-    window.confirm(`Delete ${name}?`) ? erase(id) : alert("( ˶ˆ ᗜ ˆ˵ )");
+    window.confirm(`Delete ${name}?`)
+      ? erase(id)
+      : handleNotification(`♡( ◡‿◡ )`);
   };
 
   // ---------- Delete Contact function ----------
   const erase = (id) => {
-    phoneBookService
-      .remove(id)
-      .then((returnedContact) =>
-        setPerson(person.filter((item) => item.id !== returnedContact.id))
+    phoneBookService.remove(id).then((returnedContact) => {
+      setPerson(person.filter((item) => item.id !== returnedContact.id));
+      handleNotification(
+        `${returnedContact.name} was deleted from Contact list.`
       );
+    });
   };
 
   // ==============================
@@ -124,6 +138,7 @@ const App = () => {
   return (
     <div>
       <h2>Phone book</h2>
+      <Notification message={message} />
       {/* Filter section */}
       <Filter term={filter} setTerm={setFilter} />
 
@@ -147,7 +162,6 @@ const App = () => {
 
       {/* Display Contact section */}
       <h2>Numbers</h2>
-
       <Display
         contacts={filter ? filterContact(filter, person) : person}
         onClick={handleDelete}
@@ -203,7 +217,7 @@ const Field = ({ value, onChange, required, children }) => {
 // ---------- Display ----------
 const Display = ({ contacts, onClick }) => {
   return (
-    <ul>
+    <ul className="contact-list">
       {contacts.map((contact) => (
         <li key={contact.id}>
           {contact.name} {contact.number}

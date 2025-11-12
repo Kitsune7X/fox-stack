@@ -101,7 +101,8 @@ a:hover {
 
 body {
   display: flex;
-  place-items: center;
+  justify-content: center;
+  align-items: center;
   min-width: 320px;
   min-height: 100vh;
 }
@@ -141,4 +142,34 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+.notification {
+  height: 2.5rem;
+  background-color: #1a1a1a;
+  border-radius: 5px;
+  padding: 0.5rem 1.2rem;
+}
+
+.notification:empty {
+  background-color: revert;
+}
+
+.notification > span {
+  font-size: 1.1rem;
+  font-weight: 700;
+  transition: 0.3s ease;
+}
+
+.contact-list {
+  /* background-color: #535bf2; */
+  height: 20rem;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+  padding: 2rem 2.5rem;
+  border: 1px solid #606060;
+  border-radius: 7px;
 }
