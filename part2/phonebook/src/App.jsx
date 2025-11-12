@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react";
 import phoneBookService from "./services/phone-book";
+import axios from "axios";
 
 const App = () => {
   const [person, setPerson] = useState([]);
+  const update = person;
+  console.log(update);
 
   const [newName, setNewName] = useState("");
 
@@ -31,7 +34,6 @@ const App = () => {
     const newContact = {
       name: newName,
       number: newNumber,
-      id: person.length + 1,
     };
     // Check for duplicate, then either showing the error or
     // update the contact list
@@ -50,8 +52,15 @@ const App = () => {
 
   // ---------- Update Contact list function ----------
   const updateContact = (newContact) => {
+    axios.post("http://localhost:3001/persons", newContact).then((response) => {
+      console.log(response.data);
+      setPerson(person.concat(response.data));
+    });
+    console.log(person);
+    // console.log(a);
+
     // Update the `person` array by concat it `newContact` object
-    setPerson(person.concat(newContact));
+
     // After updating contact list, reset input value
     setNewName("");
     setNewNumber("");
@@ -106,6 +115,7 @@ const App = () => {
 
       {/* Display Contact section */}
       <h2>Numbers</h2>
+      {/* It doesn't break now when I set it to `person`. Why? No fucking idea */}
       <Display contacts={filter ? filterContact(filter, person) : person} />
     </div>
   );
@@ -153,15 +163,25 @@ const Field = ({ value, onChange, required, children }) => (
 );
 
 // ---------- Display ----------
-const Display = ({ contacts }) => (
-  <ul>
-    {contacts.map((contact) => (
-      <li key={contact.id}>
-        {contact.name} {contact.number}
-      </li>
-    ))}
-  </ul>
-);
+const Display = ({ contacts }) => {
+  console.log(contacts);
+  // console.log(contacts.name);
+
+  return (
+    <ul>
+      {contacts.map(
+        (contact) => (
+          console.log(contact.name),
+          (
+            <li key={contact.id}>
+              {contact.name} {contact.number}
+            </li>
+          )
+        )
+      )}
+    </ul>
+  );
+};
 
 // ==============================
 // * Components — END
