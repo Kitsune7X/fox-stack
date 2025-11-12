@@ -35,23 +35,18 @@ const App = () => {
     };
     // Check for duplicate, then either showing the error or
     // update the contact list
-    // checkExistingName(newName, newNumber, person)
-    //   ? showError(newName)
-    //   : updateContact(newContact);
-    const a = person.find((item) => newName === item.name);
-    // console.log(a);
-    // console.log(typeof a.number);
-    // console.log(typeof newNumber);
-    // console.log(checkExistingNumber(newNumber, a.number));
-    // console.log(newNumber === a.number);
+    const matched = person.find((item) => newName === item.name);
 
-    if (a && checkExistingNumber(newNumber, a)) {
-      showError(newName);
-    } else if (a && !checkExistingNumber(newNumber, a)) {
-      if (window.confirm(`Do you want to update the number from ${a.name}?`)) {
-        const changedNumber = { ...a, number: newNumber };
+    if (matched && matchNumber(newNumber, matched.number)) showError(newName);
+    else if (matched && !matchNumber(newNumber, matched.number)) {
+      if (
+        window.confirm(
+          `${matched.name} is already added to phone book, replace the old number with new one?`
+        )
+      ) {
+        const changedNumber = { ...matched, number: newNumber };
         axios
-          .put(`http://localhost:3001/persons/${a.id}`, changedNumber)
+          .put(`http://localhost:3001/persons/${matched.id}`, changedNumber)
           .then((response) => {
             console.log(response.data);
             const result = response.data;
@@ -60,29 +55,15 @@ const App = () => {
             );
           });
       } else {
-        alert(`No changes to ${a.name} has been made`);
+        alert(`No changes to ${matched.name} has been made`);
       }
     } else {
       updateContact(newContact);
     }
   };
 
-  // ---------- Existing Name Check function  ----------
-  // Use some() to see if the array already contain the contact.
-  const checkExistingName = (name, number, list) => {
-    const a = list.find((item) => name === item.name);
-    console.log(a);
-    console.log(a.number);
-    console.log(checkExistingNumber(number, a));
-
-    if (a && checkExistingNumber(number, a)) return true;
-    else if (a && !checkExistingNumber(number, a))
-      console.log("Do you want to update number ?");
-    else return false;
-  };
-
   // ---------- Existing Number Check function ----------
-  const checkExistingNumber = (number, item) => number === item.number;
+  const matchNumber = (number1, number2) => number1 === number2;
 
   // ---------- Show Error function ----------
   const showError = (name) => alert(`${name} is already added to phone book`);
@@ -129,12 +110,6 @@ const App = () => {
         setPerson(person.filter((item) => item.id !== returnedContact.id))
       );
   };
-
-  // Update number to existing user
-  // If the input name is the same with one of the name of the array
-  // then find the id of that object in the array. Pop window.confirm()
-  // function and update the data
-  // need to take newName as parameter to compare
 
   // ==============================
   // * Functions — END
