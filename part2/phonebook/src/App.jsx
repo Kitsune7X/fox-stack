@@ -31,6 +31,7 @@ const App = () => {
     setMessage(message);
     setTimeout(() => {
       setMessage("");
+      // This fucking shit is so simple yet it took me forever to figure out
       setError(false);
     }, 5000);
   };

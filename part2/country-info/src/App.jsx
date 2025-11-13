@@ -13,25 +13,38 @@ const App = () => {
     console.log("Here!");
   };
 
-  axios
-    .get("https://studies.cs.helsinki.fi/restcountries/api/all")
-    .then((response) => {
-      console.log(response.data);
-    });
+  const doStuff = () => {
+    axios
+      .get("https://studies.cs.helsinki.fi/restcountries/api/all")
+      .then((response) => {
+        console.log(response.data);
+        setCountry(response.data);
+      });
+  };
 
   // Initial state, when there is no data then don't fetch it
+
+  // Display the name list
 
   // ==============================
   // * Function — END
   // ==============================
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label htmlFor="country">
-        find countries
-        <input type="text" id="country" />
-      </label>
-    </form>
+    <div>
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="country">
+          find countries
+          <input type="text" id="country" />
+        </label>
+      </form>
+      <ul>
+        {country.map((b) => (
+          <li>{b.name.common}</li>
+        ))}
+      </ul>
+      <button onClick={doStuff}>debug button</button>
+    </div>
   );
 };
 
