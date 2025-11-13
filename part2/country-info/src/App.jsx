@@ -4,16 +4,11 @@ import axios from "axios";
 const App = () => {
   const [country, setCountry] = useState([]);
   const [newCountry, setNewCountry] = useState("");
+  const [perfectMatch, setPerfectMatch] = useState("");
   console.log(newCountry);
   // console.log(country);
 
   useEffect(() => {
-    // if (!newCountry) return;
-    console.log("effect running");
-    // Testing phase
-    // Trigger fetch when input value change
-    // Fetch the data only when input is not empty
-
     axios
       .get(
         // `https://studies.cs.helsinki.fi/restcountries/api/name/${newCountry}`
@@ -24,6 +19,21 @@ const App = () => {
         setCountry(response.data);
       });
   }, []);
+
+  useEffect(() => {
+    if (perfectMatch) {
+      axios
+        .get(
+          `https://studies.cs.helsinki.fi/restcountries/api/name/${perfectMatch}`
+        )
+        .then(
+          (response) => {
+            console.log(response.data);
+          },
+          [perfectMatch]
+        );
+    }
+  });
 
   // ==============================
   // * Function — START
@@ -86,11 +96,17 @@ const App = () => {
       <div>
         {newCountry ? (
           <ul>
-            {newCountry
-              ? search(newCountry, country).map((item) => (
+            {newCountry ? (
+              search(newCountry, country).length <= 10 ? (
+                search(newCountry, country).map((item) => (
                   <li>{item.name.common}</li>
                 ))
-              : ""}
+              ) : (
+                <span>Too many matches, specify another</span>
+              )
+            ) : (
+              ""
+            )}
           </ul>
         ) : (
           ""
