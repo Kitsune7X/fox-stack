@@ -43,41 +43,33 @@ const App = () => {
     console.log("Here!");
   };
 
-  const doStuff = () => {
-    axios
-      .get("https://studies.cs.helsinki.fi/restcountries/api/all")
-      .then((response) => {
-        // console.log(response.data);
-        setCountry([response.data]);
-      });
-  };
-
   // ---------- Search country function ----------
   const search = (term, list) => {
     // if (!newCountry) return;
-    const perfectCell = list.find(
-      (item) => term.trim().toLowerCase() === item.name.common.toLowerCase()
-    );
-    console.log(perfectCell);
+    // const perfectCell = list.find(
+    //   (item) => term.trim().toLowerCase() === item.name.common.toLowerCase()
+    // );
+    // console.log(perfectCell);
 
-    if (perfectCell) {
-      console.log("WTF");
-      setPerfectMatch(term.trim().toLowerCase());
-      // setFilter([]);
-      setFilter(perfectCell);
+    // if (perfectCell) {
+    //   console.log("WTF");
+    //   setPerfectMatch(term.trim().toLowerCase());
+    //   // setFilter([]);
+    //   setFilter(perfectCell);
 
-      return perfectCell;
-    } else {
-      setPerfectMatch("");
+    //   return perfectCell;
+    // } else {
+    // setPerfectMatch("");
 
-      const x = list.filter((item) => {
-        const re = new RegExp(term.trim().toLowerCase());
-        return item.name.common.toLowerCase().search(re) !== -1;
-      });
-      // console.log(x);
-
-      setFilter(x);
-    }
+    const x = list.filter((item) => {
+      const re = new RegExp(term.trim().toLowerCase());
+      return item.name.common.toLowerCase().search(re) !== -1;
+    });
+    // console.log(x);
+    if (x.length === 1) setPerfectMatch(term.trim().toLowerCase());
+    else setPerfectMatch("");
+    setFilter(x);
+    // }
   };
 
   // const c = search(newCountry, country);
@@ -105,23 +97,38 @@ const App = () => {
           />
         </label>
       </form>
-      <button onClick={doStuff}>debug button</button>
+
       <div>
-        {newCountry ? perfectMatch ? <h1>WTF</h1> : "FUCK" : ""}
-        {/* {perfectMatch ? <span>WTF</span> : ""} */}
-        {/* <ul>
-          {newCountry ? (
-            search(newCountry, country).length <= 10 ? (
-              search(newCountry, country).map((item) => (
-                <li>{item.name.common}</li>
-              ))
-            ) : (
-              <span>Too many matches, specify another</span>
-            )
+        {newCountry ? (
+          perfectMatch ? (
+            filter.map((item) => (
+              <div key={item.name}>
+                <h1>{item.name.common}</h1>
+                <p>Capital: {item.capital}</p>
+                <p>Area: {item.area}</p>
+                <h2>Languages</h2>
+                <ul>
+                  {Object.entries(item.languages).map(([_, lang]) => (
+                    <li key={_}>{lang}</li>
+                  ))}
+                </ul>
+                <div>
+                  <img src={item.flags.svg} alt={item.flags.alt} width={150} />
+                </div>
+              </div>
+            ))
+          ) : filter.length > 10 ? (
+            <span>Too many matches, specify another filter</span>
           ) : (
-            ""
-          )}
-        </ul> */}
+            <ul>
+              {filter.map((item) => (
+                <li>{item.name.common}</li>
+              ))}
+            </ul>
+          )
+        ) : (
+          ""
+        )}
       </div>
 
       {/* <p>
@@ -133,3 +140,20 @@ const App = () => {
 };
 
 export default App;
+
+// const languages = {
+//   fra: "French",
+//   gsw: "Swiss German",
+//   ita: "Italian",
+//   roh: "Romansh",
+// };
+// console.log([...languages]);
+
+// console.log(Array.from(languages));
+// const arr = Object.entries(languages);
+// console.log(arr);
+// const m = arr.map(([_, k]) => {
+//   return k;
+// });
+
+// console.log(m);
