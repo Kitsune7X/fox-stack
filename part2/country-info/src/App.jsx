@@ -6,12 +6,11 @@ const App = () => {
   const [newCountry, setNewCountry] = useState("");
   const [filter, setFilter] = useState([]);
   const [perfectMatch, setPerfectMatch] = useState("");
-  // const [fuck, setFuck] = useState({});
+
   console.log(newCountry);
-  // console.log(country);
+
   console.log(`perfect: ${perfectMatch}`);
   console.log(filter);
-  // console.log(`fuck: ${fuck}`);
 
   useEffect(() => {
     axios
@@ -22,17 +21,18 @@ const App = () => {
       });
   }, []);
 
-  useEffect(() => {
-    if (!perfectMatch) return;
-    axios
-      .get(
-        `https://studies.cs.helsinki.fi/restcountries/api/name/${perfectMatch}`
-      )
-      .then((response) => {
-        console.log(response.data);
-        setFilter(response.data);
-      });
-  }, [perfectMatch]);
+  // useEffect(() => {
+  //   if (!perfectMatch) return;
+  //   axios
+  //     .get(
+  //       `https://studies.cs.helsinki.fi/restcountries/api/name/${perfectMatch}` // I just realized that I could use the data from /all too. Fuck me
+  //     )
+  //     .then((response) => {
+  //       console.log(response.data);
+  //       setFilter(response.data);
+  //       console.log(response.data.name.common);
+  //     });
+  // }, [perfectMatch]);
 
   // ==============================
   // * Function — START
@@ -48,7 +48,7 @@ const App = () => {
       .get("https://studies.cs.helsinki.fi/restcountries/api/all")
       .then((response) => {
         // console.log(response.data);
-        setCountry(response.data);
+        setCountry([response.data]);
       });
   };
 
@@ -64,7 +64,7 @@ const App = () => {
       console.log("WTF");
       setPerfectMatch(term.trim().toLowerCase());
       // setFilter([]);
-      // setFilter(perfectCell);
+      setFilter(perfectCell);
 
       return perfectCell;
     } else {
@@ -83,8 +83,6 @@ const App = () => {
   // const c = search(newCountry, country);
   // console.log(`c: ${c}`);
   console.log(perfectMatch);
-
-  // if (c.length === 1) console.log("WTF!");
 
   // console.log(handleSearchResult(c));
   // ==============================
@@ -109,6 +107,7 @@ const App = () => {
       </form>
       <button onClick={doStuff}>debug button</button>
       <div>
+        {newCountry ? perfectMatch ? <h1>WTF</h1> : "FUCK" : ""}
         {/* {perfectMatch ? <span>WTF</span> : ""} */}
         {/* <ul>
           {newCountry ? (
