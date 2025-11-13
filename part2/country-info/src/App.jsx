@@ -7,6 +7,7 @@ const App = () => {
   const [perfectMatch, setPerfectMatch] = useState("");
   console.log(newCountry);
   // console.log(country);
+  console.log(`perfect: ${perfectMatch}`);
 
   useEffect(() => {
     axios
@@ -56,23 +57,29 @@ const App = () => {
   // ---------- Search country function ----------
   const search = (term, list) => {
     if (!newCountry) return;
-    return list.filter((item) => {
-      const re = new RegExp(term.trim().toLowerCase());
-      return item.name.common.toLowerCase().search(re) !== -1;
-    });
+    const perfectCell = list.find(
+      (item) => term.trim().toLowerCase() === item.name.common.toLowerCase()
+    );
+    console.log(perfectCell);
+
+    if (perfectCell) {
+      console.log("WTF");
+      setPerfectMatch(term.trim().toLowerCase());
+      return perfectCell;
+    } else {
+      setPerfectMatch("");
+      return list.filter((item) => {
+        const re = new RegExp(term.trim().toLowerCase());
+        return item.name.common.toLowerCase().search(re) !== -1;
+      });
+    }
   };
 
-  const c = search(newCountry, country);
-  console.log(c);
+  // const c = search(newCountry, country);
+  // console.log(c);
+  console.log(perfectMatch);
 
-  // Need a function to handle the result of search. If
-  // ---------- Handle search result function ----------
-  const handleSearchResult = (result) => {
-    if (!result) return;
-    return result.length > 10
-      ? `Too many matches, specify another filter`
-      : result;
-  };
+  // if (c.length === 1) console.log("WTF!");
 
   // console.log(handleSearchResult(c));
   // ==============================
@@ -88,29 +95,28 @@ const App = () => {
             type="text"
             id="country"
             value={newCountry}
-            onChange={(e) => setNewCountry(e.target.value)}
+            onChange={(e) => {
+              setNewCountry(e.target.value);
+              search(e.target.value, country);
+            }}
           />
         </label>
       </form>
       <button onClick={doStuff}>debug button</button>
       <div>
-        {newCountry ? (
-          <ul>
-            {newCountry ? (
-              search(newCountry, country).length <= 10 ? (
-                search(newCountry, country).map((item) => (
-                  <li>{item.name.common}</li>
-                ))
-              ) : (
-                <span>Too many matches, specify another</span>
-              )
+        {/* <ul>
+          {newCountry ? (
+            search(newCountry, country).length <= 10 ? (
+              search(newCountry, country).map((item) => (
+                <li>{item.name.common}</li>
+              ))
             ) : (
-              ""
-            )}
-          </ul>
-        ) : (
-          ""
-        )}
+              <span>Too many matches, specify another</span>
+            )
+          ) : (
+            ""
+          )}
+        </ul> */}
       </div>
 
       {/* <p>
