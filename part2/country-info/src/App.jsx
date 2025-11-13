@@ -1,8 +1,29 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 
 const App = () => {
   const [country, setCountry] = useState([]);
+  const [newCountry, setNewCountry] = useState("");
+  console.log(newCountry);
+  // console.log(country);
+
+  useEffect(() => {
+    // if (!newCountry) return;
+    console.log("effect running");
+    // Testing phase
+    // Trigger fetch when input value change
+    // Fetch the data only when input is not empty
+
+    axios
+      .get(
+        // `https://studies.cs.helsinki.fi/restcountries/api/name/${newCountry}`
+        `https://studies.cs.helsinki.fi/restcountries/api/all`
+      )
+      .then((response) => {
+        // console.log(response.data);
+        setCountry(response.data);
+      });
+  }, []);
 
   // ==============================
   // * Function — START
@@ -17,15 +38,33 @@ const App = () => {
     axios
       .get("https://studies.cs.helsinki.fi/restcountries/api/all")
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         setCountry(response.data);
       });
   };
 
-  // Initial state, when there is no data then don't fetch it
+  // ---------- Search country function ----------
+  const search = (term, list) => {
+    if (!newCountry) return;
+    return list.filter((item) => {
+      const re = new RegExp(term.trim().toLowerCase());
+      return item.name.common.toLowerCase().search(re) !== -1;
+    });
+  };
 
-  // Display the name list
+  const c = search(newCountry, country);
+  console.log(c);
 
+  // Need a function to handle the result of search. If
+  // ---------- Handle search result function ----------
+  const handleSearchResult = (result) => {
+    if (!result) return;
+    return result.length > 10
+      ? `Too many matches, specify another filter`
+      : result;
+  };
+
+  // console.log(handleSearchResult(c));
   // ==============================
   // * Function — END
   // ==============================
@@ -35,17 +74,40 @@ const App = () => {
       <form onSubmit={handleSubmit}>
         <label htmlFor="country">
           find countries
-          <input type="text" id="country" />
+          <input
+            type="text"
+            id="country"
+            value={newCountry}
+            onChange={(e) => setNewCountry(e.target.value)}
+          />
         </label>
       </form>
-      <ul>
-        {country.map((b) => (
-          <li>{b.name.common}</li>
-        ))}
-      </ul>
       <button onClick={doStuff}>debug button</button>
+      <div>
+        {newCountry ? (
+          <ul>
+            {newCountry
+              ? search(newCountry, country).map((item) => (
+                  <li>{item.name.common}</li>
+                ))
+              : ""}
+          </ul>
+        ) : (
+          ""
+        )}
+      </div>
+
+      {/* <p>
+        <span>debug </span>
+        {country.name.common}
+      </p> */}
     </div>
   );
 };
 
 export default App;
+
+const str = "";
+const re = new RegExp(str.trim().toLowerCase());
+
+console.log(re);
