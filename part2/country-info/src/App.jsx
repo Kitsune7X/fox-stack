@@ -15,10 +15,7 @@ const App = () => {
 
   useEffect(() => {
     axios
-      .get(
-        // `https://studies.cs.helsinki.fi/restcountries/api/name/${newCountry}`
-        `https://studies.cs.helsinki.fi/restcountries/api/all`
-      )
+      .get(`https://studies.cs.helsinki.fi/restcountries/api/all`)
       .then((response) => {
         // console.log(response.data);
         setCountry(response.data);
@@ -26,20 +23,16 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    if (perfectMatch) {
-      axios
-        .get(
-          `https://studies.cs.helsinki.fi/restcountries/api/name/${perfectMatch}`
-        )
-        .then(
-          (response) => {
-            console.log(response.data);
-            // setFilter(filter.concat(response.data));
-          },
-          [perfectMatch]
-        );
-    }
-  });
+    if (!perfectMatch) return;
+    axios
+      .get(
+        `https://studies.cs.helsinki.fi/restcountries/api/name/${perfectMatch}`
+      )
+      .then((response) => {
+        console.log(response.data);
+        setFilter(response.data);
+      });
+  }, [perfectMatch]);
 
   // ==============================
   // * Function — START
@@ -71,7 +64,7 @@ const App = () => {
       console.log("WTF");
       setPerfectMatch(term.trim().toLowerCase());
       // setFilter([]);
-      setFilter(perfectCell);
+      // setFilter(perfectCell);
 
       return perfectCell;
     } else {
@@ -81,7 +74,7 @@ const App = () => {
         const re = new RegExp(term.trim().toLowerCase());
         return item.name.common.toLowerCase().search(re) !== -1;
       });
-      console.log(x);
+      // console.log(x);
 
       setFilter(x);
     }
