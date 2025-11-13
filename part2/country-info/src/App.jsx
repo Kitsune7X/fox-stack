@@ -4,10 +4,14 @@ import axios from "axios";
 const App = () => {
   const [country, setCountry] = useState([]);
   const [newCountry, setNewCountry] = useState("");
+  const [filter, setFilter] = useState([]);
   const [perfectMatch, setPerfectMatch] = useState("");
+  // const [fuck, setFuck] = useState({});
   console.log(newCountry);
   // console.log(country);
   console.log(`perfect: ${perfectMatch}`);
+  console.log(filter);
+  // console.log(`fuck: ${fuck}`);
 
   useEffect(() => {
     axios
@@ -30,6 +34,7 @@ const App = () => {
         .then(
           (response) => {
             console.log(response.data);
+            // setFilter(filter.concat(response.data));
           },
           [perfectMatch]
         );
@@ -56,7 +61,7 @@ const App = () => {
 
   // ---------- Search country function ----------
   const search = (term, list) => {
-    if (!newCountry) return;
+    // if (!newCountry) return;
     const perfectCell = list.find(
       (item) => term.trim().toLowerCase() === item.name.common.toLowerCase()
     );
@@ -65,18 +70,25 @@ const App = () => {
     if (perfectCell) {
       console.log("WTF");
       setPerfectMatch(term.trim().toLowerCase());
+      // setFilter([]);
+      setFilter(perfectCell);
+
       return perfectCell;
     } else {
       setPerfectMatch("");
-      return list.filter((item) => {
+
+      const x = list.filter((item) => {
         const re = new RegExp(term.trim().toLowerCase());
         return item.name.common.toLowerCase().search(re) !== -1;
       });
+      console.log(x);
+
+      setFilter(x);
     }
   };
 
   // const c = search(newCountry, country);
-  // console.log(c);
+  // console.log(`c: ${c}`);
   console.log(perfectMatch);
 
   // if (c.length === 1) console.log("WTF!");
@@ -104,6 +116,7 @@ const App = () => {
       </form>
       <button onClick={doStuff}>debug button</button>
       <div>
+        {/* {perfectMatch ? <span>WTF</span> : ""} */}
         {/* <ul>
           {newCountry ? (
             search(newCountry, country).length <= 10 ? (
@@ -128,8 +141,3 @@ const App = () => {
 };
 
 export default App;
-
-const str = "";
-const re = new RegExp(str.trim().toLowerCase());
-
-console.log(re);
