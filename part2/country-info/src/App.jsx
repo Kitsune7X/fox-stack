@@ -21,18 +21,18 @@ const App = () => {
       });
   }, []);
 
-  // useEffect(() => {
-  //   if (!perfectMatch) return;
-  //   axios
-  //     .get(
-  //       `https://studies.cs.helsinki.fi/restcountries/api/name/${perfectMatch}` // I just realized that I could use the data from /all too. Fuck me
-  //     )
-  //     .then((response) => {
-  //       console.log(response.data);
-  //       setFilter(response.data);
-  //       console.log(response.data.name.common);
-  //     });
-  // }, [perfectMatch]);
+  useEffect(() => {
+    if (!perfectMatch) return;
+    axios
+      .get(
+        `https://studies.cs.helsinki.fi/restcountries/api/name/${perfectMatch}`
+      )
+      .then((response) => {
+        console.log(response.data);
+        setFilter(filter.concat(response.data));
+        // console.log(response.data.name.common);
+      });
+  }, [perfectMatch]);
 
   // ==============================
   // * Function — START
@@ -122,7 +122,19 @@ const App = () => {
           ) : (
             <ul>
               {filter.map((item) => (
-                <li>{item.name.common}</li>
+                <li>
+                  {item.name.common}
+                  <button
+                    onClick={() => {
+                      console.log("WTF");
+
+                      setPerfectMatch(item.name.common);
+                      setFilter([]);
+                    }}
+                  >
+                    show
+                  </button>
+                </li>
               ))}
             </ul>
           )
@@ -135,6 +147,32 @@ const App = () => {
         <span>debug </span>
         {country.name.common}
       </p> */}
+      {/* <button
+        onClick={() => {
+          setPerfectMatch(`japan`);
+        }}
+      >
+        debug button
+      </button> */}
+      {/* <div>
+        {perfectMatch &&
+          filter.map((item) => (
+            <div key={item.name}>
+              <h1>{item.name.common}</h1>
+              <p>Capital: {item.capital}</p>
+              <p>Area: {item.area}</p>
+              <h2>Languages</h2>
+              <ul>
+                {Object.entries(item.languages).map(([_, lang]) => (
+                  <li key={_}>{lang}</li>
+                ))}
+              </ul>
+              <div>
+                <img src={item.flags.svg} alt={item.flags.alt} width={150} />
+              </div>
+            </div>
+          ))}
+      </div> */}
     </div>
   );
 };
@@ -157,3 +195,5 @@ export default App;
 // });
 
 // console.log(m);
+
+// Add button to each list first. When the button is clicked, set perfectMatch status
