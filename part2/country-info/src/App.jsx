@@ -11,13 +11,6 @@ const App = () => {
   const [weather, setWeather] = useState({});
   const [weatherIcon, setWeatherIcon] = useState("");
 
-  console.log(newCountry);
-
-  console.log(`perfect: ${perfectMatch}`);
-  console.log(filter);
-  console.log(weather);
-  console.log(weatherIcon);
-
   useEffect(() => {
     axios
       .get(`https://studies.cs.helsinki.fi/restcountries/api/all`)
@@ -39,13 +32,10 @@ const App = () => {
     };
     fetchData();
   }, [perfectMatch]);
+
   // ==============================
   // * Function — START
   // ==============================
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-  };
 
   // ---------- Search country function ----------
   const search = (term, list) => {
@@ -54,7 +44,7 @@ const App = () => {
       return item.name.common.toLowerCase().search(re) !== -1;
     });
     if (x.length === 1)
-      setPerfectMatch(x.reduce((acc, curr) => acc + curr.name.common, ""));
+      setPerfectMatch(x.reduce((acc, curr) => acc + curr.capital, ""));
     else setPerfectMatch("");
     setFilter(x);
   };
@@ -65,20 +55,18 @@ const App = () => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="country">
-          find countries
-          <input
-            type="text"
-            id="country"
-            value={newCountry}
-            onChange={(e) => {
-              setNewCountry(e.target.value);
-              search(e.target.value, country);
-            }}
-          />
-        </label>
-      </form>
+      <label htmlFor="country">
+        find countries
+        <input
+          type="text"
+          id="country"
+          value={newCountry}
+          onChange={(e) => {
+            setNewCountry(e.target.value);
+            search(e.target.value, country);
+          }}
+        />
+      </label>
 
       <div>
         {newCountry ? (
@@ -117,7 +105,7 @@ const App = () => {
                   {item.name.common}
                   <button
                     onClick={() => {
-                      setPerfectMatch(item.name.common);
+                      setPerfectMatch(item.capital);
                       setFilter(
                         filter.filter((z) => z.name.common === item.name.common)
                       );
