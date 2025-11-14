@@ -10,11 +10,14 @@ const App = () => {
   const [filter, setFilter] = useState([]);
   const [perfectMatch, setPerfectMatch] = useState("");
   const [weather, setWeather] = useState({});
+  const [weatherIcon, setWeatherIcon] = useState("");
 
   console.log(newCountry);
 
   console.log(`perfect: ${perfectMatch}`);
   console.log(filter);
+  console.log(weather);
+  console.log(weatherIcon);
 
   useEffect(() => {
     axios
@@ -39,7 +42,6 @@ const App = () => {
   // }, [perfectMatch]);
 
   useEffect(() => {
-    // if (!weather) return;
     if (!perfectMatch) return;
 
     const fetchData = async () => {
@@ -47,6 +49,11 @@ const App = () => {
         `https://api.openweathermap.org/data/2.5/weather?q=${perfectMatch}&appid=${apiKey}`
       );
       console.log(data);
+
+      setWeather(data);
+      setWeatherIcon(data.weather.reduce((acc, curr) => acc + curr.icon, ""));
+
+      // console.log(weather.weather.icon);
     };
     fetchData();
   }, [perfectMatch]);
@@ -131,6 +138,14 @@ const App = () => {
                 </ul>
                 <div>
                   <img src={item.flags.svg} alt={item.flags.alt} width={150} />
+                </div>
+                <div>
+                  <h2>Weather in {item.capital}</h2>
+                  <p>Temperature: {weather?.main?.temp}</p>
+                  <img
+                    src={`https://openweathermap.org/img/wn/${weatherIcon}@2x.png`}
+                    alt="weather condition image"
+                  />
                 </div>
               </div>
             ))
@@ -217,9 +232,20 @@ export default App;
 
 // Add button to each list first. When the button is clicked, set perfectMatch status
 
-console.log("" + "test string");
+// console.log("" + "test string");
 
-const as = [{ a: "he he", b: "WTF" }];
+// const as = [{ a: "he he", b: "WTF" }];
 
-const lb = as.reduce((acc, curr) => acc + curr.a, "");
-console.log(lb);
+// const lb = as.reduce((acc, curr) => acc + curr.a, "");
+// console.log(lb);
+
+{
+  /* <div>
+  <h2>Weather in {item.capital}</h2>
+  <img
+    src={`https://openweathermap.org/img/wn/${weather.weather.icon}@2x.png`}
+    alt="wtf"
+  />
+  <p>Temperature: {weather.main.temp}</p>
+</div>; */
+}
