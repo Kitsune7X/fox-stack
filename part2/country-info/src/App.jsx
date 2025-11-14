@@ -40,15 +40,16 @@ const App = () => {
 
   useEffect(() => {
     // if (!weather) return;
+    if (!perfectMatch) return;
 
     const fetchData = async () => {
       const { data } = await axios.get(
-        `https://api.openweathermap.org/data/2.5/weather?q=tokyo&appid=${apiKey}`
+        `https://api.openweathermap.org/data/2.5/weather?q=${perfectMatch}&appid=${apiKey}`
       );
       console.log(data);
     };
     fetchData();
-  }, []);
+  }, [perfectMatch]);
   // ==============================
   // * Function — START
   // ==============================
@@ -81,7 +82,8 @@ const App = () => {
       return item.name.common.toLowerCase().search(re) !== -1;
     });
     // console.log(x);
-    if (x.length === 1) setPerfectMatch(term.trim().toLowerCase());
+    if (x.length === 1)
+      setPerfectMatch(x.reduce((acc, curr) => acc + curr.name.common, ""));
     else setPerfectMatch("");
     setFilter(x);
     // }
@@ -214,3 +216,10 @@ export default App;
 // console.log(m);
 
 // Add button to each list first. When the button is clicked, set perfectMatch status
+
+console.log("" + "test string");
+
+const as = [{ a: "he he", b: "WTF" }];
+
+const lb = as.reduce((acc, curr) => acc + curr.a, "");
+console.log(lb);
