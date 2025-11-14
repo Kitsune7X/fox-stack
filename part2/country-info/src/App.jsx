@@ -2,10 +2,14 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 const App = () => {
+  const apiKey = import.meta.env.VITE_API_KEY;
+  // console.log(apiKey);
+
   const [country, setCountry] = useState([]);
   const [newCountry, setNewCountry] = useState("");
   const [filter, setFilter] = useState([]);
   const [perfectMatch, setPerfectMatch] = useState("");
+  const [weather, setWeather] = useState({});
 
   console.log(newCountry);
 
@@ -34,6 +38,17 @@ const App = () => {
       });
   }, [perfectMatch]);
 
+  useEffect(() => {
+    // if (!weather) return;
+
+    const fetchData = async () => {
+      const { data } = await axios.get(
+        `https://api.openweathermap.org/data/2.5/weather?q=tokyo&appid=${apiKey}`
+      );
+      console.log(data);
+    };
+    fetchData();
+  }, []);
   // ==============================
   // * Function — START
   // ==============================
@@ -173,6 +188,8 @@ const App = () => {
             </div>
           ))}
       </div> */}
+
+      {/* Weather testing  */}
     </div>
   );
 };
