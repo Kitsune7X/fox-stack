@@ -87,7 +87,7 @@ const App = () => {
                 </div>
                 <div>
                   <h2>Weather in {item.capital}</h2>
-                  <p>Temperature: {weather?.main?.temp}</p>
+                  <p>Temperature: {weather?.main?.temp} Celsius</p>
                   <img
                     src={`https://openweathermap.org/img/wn/${weatherIcon}@2x.png`}
                     alt="weather condition image"
