@@ -137,14 +137,14 @@ const App = () => {
           ) : (
             <ul>
               {filter.map((item) => (
-                <li>
+                <li key={item.name.common}>
                   {item.name.common}
                   <button
                     onClick={() => {
-                      console.log("WTF");
-
                       setPerfectMatch(item.name.common);
-                      setFilter([]);
+                      setFilter(
+                        filter.filter((z) => z.name.common === item.name.common)
+                      );
                     }}
                   >
                     show
