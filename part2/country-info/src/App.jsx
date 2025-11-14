@@ -25,18 +25,18 @@ const App = () => {
       });
   }, []);
 
-  useEffect(() => {
-    if (!perfectMatch) return;
-    axios
-      .get(
-        `https://studies.cs.helsinki.fi/restcountries/api/name/${perfectMatch}`
-      )
-      .then((response) => {
-        console.log(response.data);
-        setFilter(filter.concat(response.data));
-        // console.log(response.data.name.common);
-      });
-  }, [perfectMatch]);
+  // useEffect(() => {
+  //   if (!perfectMatch) return;
+  //   axios
+  //     .get(
+  //       `https://studies.cs.helsinki.fi/restcountries/api/name/${perfectMatch}`
+  //     )
+  //     .then((response) => {
+  //       console.log(response.data);
+  //       setFilter(filter.concat(response.data));
+  //       // console.log(response.data.name.common);
+  //     });
+  // }, [perfectMatch]);
 
   useEffect(() => {
     // if (!weather) return;
