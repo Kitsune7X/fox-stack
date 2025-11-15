@@ -47,17 +47,25 @@ app.get('/info', (request, response) => {
 });
 
 // Display the information for a single phone book entry
-// If an entry for the given id is not found, the server
-//  has to respond with the appropriate status code.
-// Get the correct route first
 app.get('/api/persons/:id', (request, response) => {
   //https://expressjs.com/en/5x/api.html#req.params
-  console.log(`id: ${id}`);
+  const id = request.params.id;
   const person = persons.find((z) => z.id === id);
 
   if (!person)
     return response.status(404).json({ error: 'NOT FOUND' });
   else response.json(person);
+});
+
+// Delete a single phone book entry
+//Implement functionality that makes it possible
+// to delete a single phone book entry by making an
+// HTTP DELETE request to the unique URL of that phone book entry.
+app.delete('/api/persons/:id', (req, res) => {
+  const id = req.params.id;
+  // Filter out the list
+  persons = persons.filter((z) => z.id !== id);
+  res.status(204).end();
 });
 
 const PORT = 3001;
