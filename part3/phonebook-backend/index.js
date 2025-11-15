@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+app.use(express.json());
 
 let persons = [
   {
@@ -24,17 +25,17 @@ let persons = [
   },
 ];
 
-// Test endpoint
+// ---------- Root entry ----------
 app.get('/', (request, response) => {
   response.send('<h1>Hello!</h1>');
 });
 
-// Get data
+// ---------- Get Data ----------
 app.get('/api/persons', (request, response) => {
   response.json(persons);
 });
 
-// Showing info
+// ---------- General info ----------
 app.get('/info', (request, response) => {
   const timestamp = new Date().toString();
   const count = persons.length;
@@ -46,7 +47,7 @@ app.get('/info', (request, response) => {
                 `);
 });
 
-// Display the information for a single phone book entry
+// ---------- Display the information for a single phone book entry ----------
 app.get('/api/persons/:id', (request, response) => {
   //https://expressjs.com/en/5x/api.html#req.params
   const id = request.params.id;
@@ -57,15 +58,33 @@ app.get('/api/persons/:id', (request, response) => {
   else response.json(person);
 });
 
-// Delete a single phone book entry
-//Implement functionality that makes it possible
-// to delete a single phone book entry by making an
-// HTTP DELETE request to the unique URL of that phone book entry.
+// ---------- Delete a single phone book entry ----------
 app.delete('/api/persons/:id', (req, res) => {
   const id = req.params.id;
   // Filter out the list
   persons = persons.filter((z) => z.id !== id);
   res.status(204).end();
+});
+
+// ---------- Add new entries ----------
+const generateId = () =>
+  String(Math.floor(Math.random() * Date.now()));
+
+app.post('/api/persons', (req, res) => {
+  console.log(req.body);
+  const body = req.body;
+  if (!body)
+    return res.status(400).json({ error: 'CONTENT MISSING.' });
+
+  const person = {
+    id: generateId(),
+    name: body.name,
+    number: body.number,
+  };
+
+  persons = [...persons, person];
+
+  res.json(person);
 });
 
 const PORT = 3001;
