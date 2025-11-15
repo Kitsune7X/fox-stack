@@ -29,7 +29,10 @@ app.get('/', (request, response) => {
   response.send('<h1>WTF!</h1>');
 });
 
-//
+// Get data
+app.get('/api/persons', (request, response) => {
+  response.json(persons);
+});
 
 const PORT = 3001;
 app.listen(PORT, () => {
