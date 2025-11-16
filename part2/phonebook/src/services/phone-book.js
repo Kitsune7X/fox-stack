@@ -1,6 +1,6 @@
-import axios from "axios";
+import axios from 'axios';
 
-const baseUrl = "http://localhost:3001/persons";
+const baseUrl = 'http://localhost:3001/api/persons';
 
 // Fetch data from server
 const getAll = () => {
@@ -9,12 +9,16 @@ const getAll = () => {
 
 // Add new contact to server
 const create = (newContact) => {
-  return axios.post(baseUrl, newContact).then((response) => response.data);
+  return axios
+    .post(baseUrl, newContact)
+    .then((response) => response.data);
 };
 
 // Delete contact
 const remove = (id) => {
-  return axios.delete(`${baseUrl}/${id}`).then((response) => response.data);
+  return axios
+    .delete(`${baseUrl}/${id}`)
+    .then((response) => response.data);
 };
 
 // Update number

@@ -1,14 +1,14 @@
-import { useState, useEffect } from "react";
-import phoneBookService from "./services/phone-book";
-import Notification from "./components/Notification";
+import { useState, useEffect } from 'react';
+import phoneBookService from './services/phone-book';
+import Notification from './components/Notification';
 // import axios from "axios";
 
 const App = () => {
   const [person, setPerson] = useState([]);
-  const [newName, setNewName] = useState("");
-  const [newNumber, setNewNumber] = useState("");
-  const [filter, setFilter] = useState("");
-  const [message, setMessage] = useState("");
+  const [newName, setNewName] = useState('');
+  const [newNumber, setNewNumber] = useState('');
+  const [filter, setFilter] = useState('');
+  const [message, setMessage] = useState('');
   const [error, setError] = useState(false);
 
   // useEffect(() => {
@@ -30,8 +30,8 @@ const App = () => {
   const handleNotification = (message) => {
     setMessage(message);
     setTimeout(() => {
-      setMessage("");
-      // This fucking shit is so simple yet it took me forever to figure out
+      setMessage('');
+
       setError(false);
     }, 5000);
   };
@@ -52,7 +52,9 @@ const App = () => {
     const matched = person.find((item) => newName === item.name);
 
     if (matched && matchNumber(newNumber, matched.number))
-      handleNotification(`${newName} is already added to phone book.`);
+      handleNotification(
+        `${newName} is already added to phone book.`
+      );
     else if (matched && !matchNumber(newNumber, matched.number)) {
       if (
         window.confirm(
@@ -66,10 +68,14 @@ const App = () => {
           .then((returnedContact) => {
             setPerson(
               person.map((item) =>
-                item.id === returnedContact.id ? returnedContact : item
+                item.id === returnedContact.id
+                  ? returnedContact
+                  : item
               )
             );
-            handleNotification(`${returnedContact.name}'s Number was updated.`);
+            handleNotification(
+              `${returnedContact.name}'s Number was updated.`
+            );
             // Keep this off during testing for convenience
             // setNewName("");
             // setNewNumber("");
@@ -82,9 +88,14 @@ const App = () => {
               `${matched.name} is already deleted from server.`
             );
             // Re render the contact list
-            setPerson(person.filter((item) => item.id !== matched.id));
+            setPerson(
+              person.filter((item) => item.id !== matched.id)
+            );
           });
-      } else handleNotification(`No changes to ${matched.name} has been made.`);
+      } else
+        handleNotification(
+          `No changes to ${matched.name} has been made.`
+        );
     } else {
       // Initialize the contact object that store person info
       const newContact = {
@@ -107,8 +118,8 @@ const App = () => {
     });
 
     // After updating contact list, reset input value
-    setNewName("");
-    setNewNumber("");
+    setNewName('');
+    setNewNumber('');
   };
 
   // ---------- Filter function ----------
@@ -139,7 +150,9 @@ const App = () => {
   // ---------- Delete Contact function ----------
   const erase = (id) => {
     phoneBookService.remove(id).then((returnedContact) => {
-      setPerson(person.filter((item) => item.id !== returnedContact.id));
+      setPerson(
+        person.filter((item) => item.id !== returnedContact.id)
+      );
       handleNotification(
         `${returnedContact.name} was deleted from Contact list.`
       );
@@ -198,7 +211,7 @@ const Filter = ({ term, setTerm }) => {
       <label>
         filter shown with
         <input
-          type="text"
+          type='text'
           value={term}
           onChange={(e) => setTerm(e.target.value)}
         />
@@ -214,7 +227,7 @@ const AddContact = ({ onSubmit, children }) => {
     <form onSubmit={onSubmit}>
       {children}
       <div>
-        <button type="submit">add</button>
+        <button type='submit'>add</button>
       </div>
     </form>
   );
@@ -233,7 +246,7 @@ const Field = ({ value, onChange, required, children }) => {
 // ---------- Display ----------
 const Display = ({ contacts, onClick }) => {
   return (
-    <ul className="contact-list">
+    <ul className='contact-list'>
       {contacts.map((contact) => (
         <li key={contact.id}>
           {contact.name} {contact.number}
