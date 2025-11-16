@@ -195,7 +195,6 @@ const App = () => {
         contacts={filter ? filterContact(filter, person) : person}
         onClick={handleDelete}
       />
-      <button onClick={() => setError(!error)}>debug button</button>
     </div>
   );
 };
