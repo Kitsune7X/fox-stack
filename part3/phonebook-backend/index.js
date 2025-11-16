@@ -24,10 +24,14 @@ let persons = [
     number: '39-23-6423122',
   },
 ];
+
+morgan.token('body', (req) => {
+  return JSON.stringify(req.body);
+});
 app.use(express.json());
 app.use(
   morgan(
-    ':method :url :status :res[content-length] :response-time ms'
+    ':method :url :status :res[content-length] - :response-time ms :body'
   )
 );
 
@@ -60,7 +64,7 @@ app.get('/api/persons/:id', (request, response) => {
   const person = persons.find((z) => z.id === id);
 
   if (!person)
-    return response.status(404).json({ error: 'NOT FOUND' });
+    return response.status(404).json({ error: 'not found' });
   else response.json(person);
 });
 
@@ -77,10 +81,19 @@ const generateId = () =>
   String(Math.floor(Math.random() * Date.now()));
 
 app.post('/api/persons', (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
   const body = req.body;
   if (!body)
-    return res.status(400).json({ error: 'CONTENT MISSING.' });
+    return res.status(400).json({ error: 'content missing.' });
+
+  if (!body.name)
+    return res.status(400).json({ error: 'name missing' });
+
+  if (persons.find((person) => person.name === body.name))
+    return res.status(400).json({ error: 'name must be unique' });
+
+  if (!body.number)
+    return res.status(400).json({ error: 'number missing' });
 
   const person = {
     id: generateId(),
