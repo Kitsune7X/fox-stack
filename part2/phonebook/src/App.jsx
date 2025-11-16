@@ -77,8 +77,8 @@ const App = () => {
               `${returnedContact.name}'s Number was updated.`
             );
             // Keep this off during testing for convenience
-            // setNewName("");
-            // setNewNumber("");
+            setNewName('');
+            setNewNumber('');
           })
           .catch((error) => {
             // Set error to true to trigger class modification in Notification component

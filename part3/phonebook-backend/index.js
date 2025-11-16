@@ -24,16 +24,34 @@ let persons = [
     number: '39-23-6423122',
   },
 ];
+// ==============================
+// * Middleware — START
+// ==============================
 
+// ---------- Morgan token ----------
+// Create a new token to be used in `morgan`
+// https://github.com/expressjs/morgan#creating-new-tokens
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify
 morgan.token('body', (req) => {
   return JSON.stringify(req.body);
 });
+
 app.use(express.json());
+
+// ---------- Logging info ----------
 app.use(
   morgan(
     ':method :url :status :res[content-length] - :response-time ms :body'
   )
 );
+
+// ==============================
+// * Middleware — END
+// ==============================
+
+// ==============================
+// * Handling requests — START
+// ==============================
 
 // ---------- Root entry ----------
 app.get('/', (request, response) => {
@@ -71,9 +89,12 @@ app.get('/api/persons/:id', (request, response) => {
 // ---------- Delete a single phone book entry ----------
 app.delete('/api/persons/:id', (req, res) => {
   const id = req.params.id;
+  // Find the contact that need to be deleted
+  const person = persons.find((z) => z.id === id);
   // Filter out the list
   persons = persons.filter((z) => z.id !== id);
-  res.status(204).end();
+  // Response the person so that the list get updated
+  res.json(person);
 });
 
 // ---------- Add new entries ----------
@@ -106,7 +127,13 @@ app.post('/api/persons', (req, res) => {
   res.json(person);
 });
 
-const PORT = 3001;
+// ==============================
+// * Handling requests — END
+// ==============================
+
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+// Build the front end, copy to backend
