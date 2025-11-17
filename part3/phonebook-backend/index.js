@@ -45,6 +45,9 @@ app.use(
   )
 );
 
+// ---------- Serving static files  ----------
+app.use(express.static('dist'));
+
 // ==============================
 // * Middleware — END
 // ==============================
@@ -135,5 +138,3 @@ const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
-
-// Build the front end, copy to backend
